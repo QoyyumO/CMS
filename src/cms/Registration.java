@@ -35,6 +35,7 @@ import javax.mail.internet.MimeMessage;
 public class Registration extends javax.swing.JFrame {
    private File selectedImageFile;
    private BufferedImage selectedImage;
+   static byte imageBytes[] = null;
     /**
      * Creates new form Registration
      */
@@ -75,6 +76,7 @@ public class Registration extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -255,11 +257,17 @@ public class Registration extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 231, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -324,8 +332,8 @@ public class Registration extends javax.swing.JFrame {
         jRadioButton1.setSelected(false);
         jRadioButton2.setSelected(false);
         jComboBox1.setSelectedIndex(0);
-        jPanel4.removeAll();
-        jPanel4.repaint();
+        jLabel7.removeAll();
+        jLabel7.repaint();
                 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -361,11 +369,11 @@ public class Registration extends javax.swing.JFrame {
         if (jComboBox1.getSelectedIndex() <= 0) {
             JOptionPane.showMessageDialog(null, "Please select a role!");
         }
-        // Get image from jPanel2 if exists
+        // Get image from jLabel7 if exists
         byte[] imageBytes = null;
-        if (jPanel4.getComponentCount() > 0
-                && jPanel4.getComponent(0) instanceof JLabel) {
-            JLabel imageLabel = (JLabel) jPanel4.getComponent(0);
+        if (jLabel7.getComponentCount() > 0
+                && jLabel7.getComponent(0) instanceof JLabel) {
+            JLabel imageLabel = (JLabel) jLabel7.getComponent(0);
             ImageIcon icon = (ImageIcon) imageLabel.getIcon();
             if (icon != null) {
                 try {
@@ -451,8 +459,8 @@ public class Registration extends javax.swing.JFrame {
                 jRadioButton1.setSelected(false);
                 jRadioButton2.setSelected(false);
                 jComboBox1.setSelectedIndex(0);
-                jPanel4.removeAll();
-                jPanel4.repaint();
+                jLabel7.removeAll();
+                jLabel7.repaint();
             } else {
                 JOptionPane.showMessageDialog(null, "Registration failed!");
             }
@@ -513,6 +521,9 @@ public class Registration extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        webcam page = new webcam(this);
+        page.show();
+        page.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -548,10 +559,10 @@ public class Registration extends javax.swing.JFrame {
             selectedImage = ImageIO.read(selectedImageFile);
             
             if (selectedImage != null) {
-                // Scale the image to fit jPanel4 while maintaining aspect ratio
+                // Scale the image to fit jLabel7 while maintaining aspect ratio
                 Image scaledImage = selectedImage.getScaledInstance(
-                    jPanel4.getWidth(), 
-                    jPanel4.getHeight(), 
+                    jLabel7.getWidth(), 
+                    jLabel7.getHeight(), 
                     Image.SCALE_SMOOTH);
                 
                 // Create a JLabel to display the image
@@ -559,16 +570,16 @@ public class Registration extends javax.swing.JFrame {
                 imageLabel.setHorizontalAlignment(JLabel.CENTER);
                 imageLabel.setVerticalAlignment(JLabel.CENTER);
                 
-                // Clear previous components from jPanel4
-                jPanel4.removeAll();
+                // Clear previous components from jLabel7
+                jLabel7.removeAll();
                 
-                // Add the image label to jPanel4
-                jPanel4.setLayout(new BorderLayout());
-                jPanel4.add(imageLabel, BorderLayout.CENTER);
+                // Add the image label to jLabel7
+                jLabel7.setLayout(new BorderLayout());
+                jLabel7.add(imageLabel, BorderLayout.CENTER);
                 
                 // Refresh the panel
-                jPanel4.revalidate();
-                jPanel4.repaint();
+                jLabel7.revalidate();
+                jLabel7.repaint();
             }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, 
@@ -629,6 +640,7 @@ public class Registration extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    public javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

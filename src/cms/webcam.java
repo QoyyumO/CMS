@@ -4,17 +4,59 @@
  */
 package cms;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.security.SecureRandom;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.highgui.HighGui;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.videoio.VideoCapture;
+
+
+
 /**
  *
  * @author Ayomide
  */
 public class webcam extends javax.swing.JFrame {
-
+    static {
+        File file = new File("C:\\Users\\Ayomide\\Documents\\CSC 300\\OOP\\Class\\opencv\\build\\java\\x64\\opencv_java4110.dll");
+        System.load(file.getAbsolutePath());
+    }
+    private static File getImage;
+    private static final SecureRandom RAND = new SecureRandom();
+    public static String Filename = null;
+    private DaemonThread myThread = null;
+    private VideoCapture websource = null;
+    private final Mat frame = new Mat(1000, 1000, 1);
+    private final MatOfByte mem = new MatOfByte();
     /**
      * Creates new form webcam
      */
-    public webcam() {
+    Registration registrationForm;
+    public webcam(Registration reg) {
         initComponents();
+        websource = new VideoCapture(0);
+        myThread = new DaemonThread(jLabel2);
+        Thread t = new Thread(myThread);
+        t.setDaemon(true);
+        myThread.runnable = true;
+        t.start();
+        this.registrationForm = reg;
+    }
+
+    private webcam() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -26,21 +68,151 @@ public class webcam extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(102, 255, 255));
+
+        jLabel1.setFont(new java.awt.Font("Georgia Pro", 1, 18)); // NOI18N
+        jLabel1.setText("Webcam");
+
+        jButton1.setFont(new java.awt.Font("Georgia Pro", 2, 18)); // NOI18N
+        jButton1.setText("Take picture");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(159, 159, 159)
+                                .addComponent(jLabel1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(156, 156, 156)
+                                .addComponent(jButton1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(8, 8, 8)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(26, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public class DaemonThread implements Runnable {
+
+        protected volatile boolean runnable = false;
+
+        public DaemonThread(JLabel capture) {
+            jLabel2 = capture;
+        }
+
+        @Override
+        public void run() {
+            synchronized (this) {
+                while (runnable) {
+                    if (websource.grab()) {
+                        try {
+                            websource.retrieve(frame);
+                            Imgcodecs.imencode(".bmp", frame, mem);
+                            Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
+                            BufferedImage buff = (BufferedImage) im;
+                            Graphics g = jLabel2.getGraphics();
+                            if (g.drawImage(buff, 1, 1, jLabel2.getWidth(), jLabel2.getHeight(), null)) {
+                                if (runnable == false) {
+                                    this.wait();
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void stopCam() {
+        if (myThread != null) {
+            if (myThread.runnable == true) {
+                myThread.runnable = false;
+                websource.release();
+            }
+        }
+    }
+
+    private void CaptureImage(JLabel image) {
+        try {
+            stopCam();
+            if (getImage != null) {
+                ImageIcon imageicon = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(jLabel2.getWidth(), jLabel2.getHeight(), Image.SCALE_DEFAULT));
+                jLabel2.setIcon(imageicon);
+                ImageIcon imageico = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(registrationForm.jLabel7.getWidth(), registrationForm.jLabel7.getHeight(), Image.SCALE_DEFAULT));
+                registrationForm.jLabel7.setIcon(imageico);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Warning");
+        }
+    }
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+            try {
+                File file = new File("Capture");
+                boolean flag = true;
+                if (!file.isDirectory()) {
+                    flag = file.mkdir();
+                }
+                if (!flag) {
+                    throw new Exception("Folder does not exist");
+                }
+                int imageNo = 1 + RAND.nextInt(999);
+                Filename = file.getAbsolutePath() + "\\" + "Webcam" + imageNo + ".jpg";
+                Imgcodecs.imwrite(Filename, frame);
+                getImage = file;
+                CaptureImage(jLabel2);
+                JOptionPane.showMessageDialog(rootPane, Filename + "Captured");
+
+                dispose();
+            } catch (Exception e) {
+                stopCam();
+                JOptionPane.showMessageDialog(rootPane, "Warning");
+            }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +250,9 @@ public class webcam extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
