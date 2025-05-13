@@ -22,6 +22,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
     }
+    env envNew = new env();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -147,6 +148,7 @@ public class Login extends javax.swing.JFrame {
             String e =null;
             String p =null;
             String rl =null;
+            String n = null;
             String role1 = "Ticketing";
             String role2 = "Server";
             String role3 = "Kitchen";
@@ -155,7 +157,7 @@ public class Login extends javax.swing.JFrame {
             String email = jTextField1.getText();
             String password = jPasswordField1.getText();
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", "your own password");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
             System.out.println("Connection Successful");
             PreparedStatement ps = con.prepareStatement("select * from registration where email=? and password=?");
              ps.setString(1, email);
@@ -165,27 +167,33 @@ public class Login extends javax.swing.JFrame {
                  e = rs.getString(4);
                  p = rs.getString(8);
                  rl = rs.getString(6);
+                 n = rs.getString(1);
              }
              if ((email.equals(e)) && (password.equals(p))) {
                  JOptionPane.showMessageDialog(rootPane, "Login Successful!");
                  if (role1.equals(rl)) {
                      TicketingDashboard page = new TicketingDashboard();
+                     page.setUserName(n);
                      page.show();
                      dispose();
                  } else if (role2.equals(rl)) {
                      ServerDashboard page = new ServerDashboard();
+                     page.setUserName(n);
                      page.show();
                      dispose();
                  } else if (role3.equals(rl)) {
                      KitchenDashboard page = new KitchenDashboard();
+                     page.setUserName(n);
                      page.show();
                      dispose();
                  } else if (role4.equals(rl)) {
                      ITdashboard page = new ITdashboard();
+                     page.setUserName(n);
                      page.show();
                      dispose();
                  } else if (role5.equals(rl)) {
                      HOUDashboard page = new HOUDashboard();
+                     page.setUserName(n);
                      page.show();
                      dispose();
                  }
