@@ -385,7 +385,7 @@ public class Registration extends javax.swing.JFrame {
                 }
             }
         }
-        String password = PasswordGenerator.generateRandomPassword(12);
+        String password = PasswordGenerator.generateRandomPassword(8);
 
         // Prepare data for database
         java.sql.Date sqlDob = new java.sql.Date(dob.getTime());
@@ -417,7 +417,7 @@ public class Registration extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Registration successful!");
                 {
                     String receiver = jTextField4.getText();
-                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + password + "       Remember to change your passcode.";
+                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + password + "       Remember your passcode.";
                     String senderEmail = "oyinlolaoyadeyi@gmail.com";
                     String senderPassword = "zdthoatlgymtqjmg";
                     Properties props = new Properties();
