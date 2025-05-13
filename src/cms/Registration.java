@@ -392,7 +392,7 @@ public class Registration extends javax.swing.JFrame {
 
         // Insert into database
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", "AyMaX6250$");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", "your own password");
 
             String sql = "INSERT INTO registration (name, dob, phone, email, gender, role, profilephoto,password) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?,?)";

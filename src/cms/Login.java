@@ -155,7 +155,7 @@ public class Login extends javax.swing.JFrame {
             String email = jTextField1.getText();
             String password = jPasswordField1.getText();
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", "AyMaX6250$");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", "your own password");
             System.out.println("Connection Successful");
             PreparedStatement ps = con.prepareStatement("select * from registration where email=? and password=?");
              ps.setString(1, email);
