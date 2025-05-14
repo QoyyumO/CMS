@@ -335,8 +335,7 @@ public class Registration extends javax.swing.JFrame {
         jRadioButton1.setSelected(false);
         jRadioButton2.setSelected(false);
         jComboBox1.setSelectedIndex(0);
-        jLabel7.removeAll();
-        jLabel7.repaint();
+        jLabel7.setIcon(null);
                 
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -421,7 +420,7 @@ public class Registration extends javax.swing.JFrame {
                         Message message = new MimeMessage(session);
                         message.setFrom(new InternetAddress(senderEmail));
                         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
-                        message.setSubject("Record Inserted");
+                        message.setSubject("User Registration");
                         message.setText(body);
                         Transport.send(message);
                         JOptionPane.showMessageDialog(rootPane, "Email Sent");
@@ -436,8 +435,7 @@ public class Registration extends javax.swing.JFrame {
                 jRadioButton1.setSelected(false);
                 jRadioButton2.setSelected(false);
                 jComboBox1.setSelectedIndex(0);
-                jLabel7.removeAll();
-                jLabel7.repaint();
+                jLabel7.setIcon(null);
             } else {
                 JOptionPane.showMessageDialog(null, "Registration failed!");
             }

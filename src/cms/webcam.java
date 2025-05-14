@@ -176,18 +176,31 @@ public class webcam extends javax.swing.JFrame {
     }
 
     private void CaptureImage(JLabel image) {
-        try {
-            stopCam();
-            if (getImage != null) {
-                ImageIcon imageicon = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(jLabel2.getWidth(), jLabel2.getHeight(), Image.SCALE_DEFAULT));
-                jLabel2.setIcon(imageicon);
-                ImageIcon imageico = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(registrationForm.jLabel7.getWidth(), registrationForm.jLabel7.getHeight(), Image.SCALE_DEFAULT));
-                registrationForm.jLabel7.setIcon(imageico);
+    try {
+        stopCam();
+        if (getImage != null) {
+            ImageIcon imageicon = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(jLabel2.getWidth(), jLabel2.getHeight(), Image.SCALE_DEFAULT));
+            jLabel2.setIcon(imageicon);
+            ImageIcon imageico = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(registrationForm.jLabel7.getWidth(), registrationForm.jLabel7.getHeight(), Image.SCALE_DEFAULT));
+            registrationForm.jLabel7.setIcon(imageico);
+            
+            // Add this code to update the photo byte array
+            File imageFile = new File(Filename);
+            FileInputStream fis = new FileInputStream(imageFile);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            
+            for (int length; (length = fis.read(buffer)) != -1;) {
+                baos.write(buffer, 0, length);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Warning");
+            
+            Registration.photo = baos.toByteArray();
+            fis.close();
         }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(rootPane, "Warning");
     }
+}
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
