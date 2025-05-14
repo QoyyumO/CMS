@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.security.MessageDigest;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -393,7 +394,8 @@ public class Registration extends javax.swing.JFrame {
                 }
             }
         }
-        String password = PasswordGenerator.generateRandomPassword(8);
+        String pass = PasswordGenerator.generateRandomPassword(8);
+        String password = Hash(pass);
 
         // Prepare data for database
         java.sql.Date sqlDob = new java.sql.Date(dob.getTime());
@@ -425,7 +427,7 @@ public class Registration extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Registration successful!");
                 {
                     String receiver = jTextField4.getText();
-                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + password + "       Remember your passcode.";
+                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + pass + "       Remember your passcode.";
                     String senderEmail = "oyinlolaoyadeyi@gmail.com";
                     String senderPassword = "zdthoatlgymtqjmg";
                     Properties props = new Properties();
@@ -589,6 +591,17 @@ public class Registration extends javax.swing.JFrame {
         }
     }
     }//GEN-LAST:event_jButton2ActionPerformed
+    public String Hash(String c) {
+        try {
+            MessageDigest msgDigest = MessageDigest.getInstance("MD5");
+            msgDigest.update((new String(c)).getBytes("UTF8"));
+            String passHash = new String(msgDigest.digest());
+            return passHash;
+        } catch (Exception ex) {
+
+            return c;
+        }
+    }
 
     /**
      * @param args the command line arguments

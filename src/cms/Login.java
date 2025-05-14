@@ -4,6 +4,7 @@
  */
 package cms;
 
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -155,7 +156,8 @@ public class Login extends javax.swing.JFrame {
             String role4 = "IT";
             String role5 = "Head of Unit";
             String email = jTextField1.getText();
-            String password = jPasswordField1.getText();
+            String pass = jPasswordField1.getText();
+            String password = Hash(pass);
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
             System.out.println("Connection Successful");
@@ -205,6 +207,17 @@ public class Login extends javax.swing.JFrame {
             System.out.println(e);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+    public String Hash(String c) {
+        try {
+            MessageDigest msgDigest = MessageDigest.getInstance("MD5");
+            msgDigest.update((new String(c)).getBytes("UTF8"));
+            String passHash = new String(msgDigest.digest());
+            return passHash;
+        } catch (Exception ex) {
+
+            return c;
+        }
+    }
 
     /**
      * @param args the command line arguments
