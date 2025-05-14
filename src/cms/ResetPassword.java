@@ -4,6 +4,7 @@
  */
 package cms;
 
+import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -179,9 +180,10 @@ public class ResetPassword extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             String email = jTextField1.getText();
-            String password = Registration.PasswordGenerator.generateRandomPassword(8);
-            jLabel4.setText(password);
-            String pass = jLabel4.getText();
+            String pass1 = Registration.PasswordGenerator.generateRandomPassword(8);
+            String pass2 = Hash(pass1);
+            jLabel4.setText(pass2);
+            String password = jLabel4.getText();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
             PreparedStatement ps = con.prepareStatement("update registration SET password =?  where email=?");
@@ -191,7 +193,7 @@ public class ResetPassword extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Record Updated for "+email+"!");
             {
                     String receiver = jTextField1.getText();
-                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + password + "       Remember your password";
+                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + pass1 + "       Remember your password";
                     String senderEmail = "oyinlolaoyadeyi@gmail.com";
                     String senderPassword = "zdthoatlgymtqjmg";
                     Properties props = new Properties();
@@ -266,6 +268,17 @@ public class ResetPassword extends javax.swing.JFrame {
             }
 
             return new String(passwordArray);
+        }
+    }
+    public String Hash(String c) {
+        try {
+            MessageDigest msgDigest = MessageDigest.getInstance("MD5");
+            msgDigest.update((new String(c)).getBytes("UTF8"));
+            String passHash = new String(msgDigest.digest());
+            return passHash;
+        } catch (Exception ex) {
+
+            return c;
         }
     }
     /**

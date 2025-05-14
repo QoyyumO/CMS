@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.sql.DriverManager;
@@ -28,6 +29,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -36,7 +38,7 @@ import javax.mail.internet.MimeMessage;
 public class Registration extends javax.swing.JFrame {
    private File selectedImageFile;
    private BufferedImage selectedImage;
-   static byte imageBytes[] = null;
+   static byte photo[] = null;
     /**
      * Creates new form Registration
      */
@@ -371,29 +373,7 @@ public class Registration extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select a role!");
         }
         // Get image from jLabel7 if exists
-        byte[] imageBytes = null;
-        if (jLabel7.getComponentCount() > 0
-                && jLabel7.getComponent(0) instanceof JLabel) {
-            JLabel imageLabel = (JLabel) jLabel7.getComponent(0);
-            ImageIcon icon = (ImageIcon) imageLabel.getIcon();
-            if (icon != null) {
-                try {
-                    BufferedImage bi = new BufferedImage(
-                            icon.getIconWidth(),
-                            icon.getIconHeight(),
-                            BufferedImage.TYPE_INT_RGB);
-                    Graphics g = bi.createGraphics();
-                    icon.paintIcon(null, g, 0, 0);
-                    g.dispose();
-
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    ImageIO.write(bi, "jpg", baos);
-                    imageBytes = baos.toByteArray();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Error processing image: " + ex.getMessage());
-                }
-            }
-        }
+        
         String pass = PasswordGenerator.generateRandomPassword(8);
         String password = Hash(pass);
 
@@ -405,7 +385,7 @@ public class Registration extends javax.swing.JFrame {
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
 
             String sql = "INSERT INTO registration (name, dob, phone, email, gender, role, profilephoto,password) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement pst = conn.prepareStatement(sql);
             pst.setString(1, name);
@@ -414,12 +394,7 @@ public class Registration extends javax.swing.JFrame {
             pst.setString(4, email);
             pst.setString(5, gender);
             pst.setString(6, role);
-
-            if (imageBytes != null) {
-                pst.setBytes(7, imageBytes);
-            } else {
-                pst.setNull(7, java.sql.Types.BLOB);
-            }
+            pst.setBytes(7,photo);
             pst.setString(8, password);
             int rowsAffected = pst.executeUpdate();
 
@@ -530,66 +505,33 @@ public class Registration extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-            // Create file chooser
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Select Profile Picture");
-    
-    // Filter for image files only
-    fileChooser.setAcceptAllFileFilterUsed(false);
-    fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileFilter() {
-        @Override
-        public boolean accept(File f) {
-            if (f.isDirectory()) return true;
-            String name = f.getName().toLowerCase();
-            return name.endsWith(".jpg") || name.endsWith(".jpeg") || 
-                   name.endsWith(".png") || name.endsWith(".gif");
-        }
-        
-        @Override
-        public String getDescription() {
-            return "Image Files (*.jpg, *.jpeg, *.png, *.gif)";
-        }
-    });
+            try {
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Image", "jpg", "jpeg", "png", "gif", "bmp");
+            jFileChooser1.setAcceptAllFileFilterUsed(false);
+            jFileChooser1.addChoosableFileFilter(filter);
+            jFileChooser1.showOpenDialog(null);
 
-    // Show the file chooser
-    int returnValue = fileChooser.showOpenDialog(this);
-    
-    if (returnValue == JFileChooser.APPROVE_OPTION) {
-        selectedImageFile = fileChooser.getSelectedFile();
-        try {
-            // Read the image file
-            selectedImage = ImageIO.read(selectedImageFile);
-            
-            if (selectedImage != null) {
-                // Scale the image to fit jLabel7 while maintaining aspect ratio
-                Image scaledImage = selectedImage.getScaledInstance(
-                    jLabel7.getWidth(), 
-                    jLabel7.getHeight(), 
-                    Image.SCALE_SMOOTH);
-                
-                // Create a JLabel to display the image
-                JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
-                imageLabel.setHorizontalAlignment(JLabel.CENTER);
-                imageLabel.setVerticalAlignment(JLabel.CENTER);
-                
-                // Clear previous components from jLabel7
-                jLabel7.removeAll();
-                
-                // Add the image label to jLabel7
-                jLabel7.setLayout(new BorderLayout());
-                jLabel7.add(imageLabel, BorderLayout.CENTER);
-                
-                // Refresh the panel
-                jLabel7.revalidate();
-                jLabel7.repaint();
+            File f = jFileChooser1.getSelectedFile();
+            String filename = f.getAbsolutePath();
+
+            Image im = Toolkit.getDefaultToolkit().createImage(filename);
+            im = im.getScaledInstance(jLabel7.getWidth(), jLabel7.getHeight(), Image.SCALE_SMOOTH);
+            ImageIcon ic = new ImageIcon(im);
+            jLabel7.setIcon(ic);
+
+            File image = new File(filename);
+            FileInputStream fis = new FileInputStream(image);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            byte[] Byte = new byte[1024];
+
+            for (int i; (i = fis.read(Byte)) != -1;) {
+                baos.write(Byte, 0, i);
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, 
-                "Error loading image: " + ex.getMessage(), 
-                "Image Error", 
-                JOptionPane.ERROR_MESSAGE);
+            photo = baos.toByteArray();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Error Reading File");
         }
-    }
     }//GEN-LAST:event_jButton2ActionPerformed
     public String Hash(String c) {
         try {
