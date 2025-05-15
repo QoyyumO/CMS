@@ -4,17 +4,27 @@
  */
 package cms;
 
+import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import javax.swing.JComboBox;
+
 /**
  *
  * @author Ayomide
  */
 public class KitchenDashboard extends javax.swing.JFrame {
 
+    env envNew = new env();
+
     /**
      * Creates new form KitchenDashboard
      */
     public KitchenDashboard() {
         initComponents();
+        loadFoodItemsToComboBox(jComboBox1);
     }
 
     /**
@@ -30,8 +40,20 @@ public class KitchenDashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jPanel5 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(102, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Georgia Pro", 1, 24)); // NOI18N
         jLabel1.setText("Kitchen Dashboard");
@@ -41,6 +63,95 @@ public class KitchenDashboard extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jLabel3.setText("jLabel3");
+
+        jPanel4.setBackground(new java.awt.Color(235, 199, 158));
+
+        jLabel4.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
+        jLabel4.setText("Food Item");
+
+        jLabel5.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
+        jLabel5.setText("Quantity");
+
+        jTextField2.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jButton1.setText("Insert");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jButton2.setText("Clear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(53, 53, 53))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2)))
+                .addContainerGap(9, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(60, 60, 60)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(55, Short.MAX_VALUE))
+        );
+
+        jTabbedPane2.addTab("Insert", jPanel4);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 472, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 241, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Update/Delete", jPanel5);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -53,7 +164,9 @@ public class KitchenDashboard extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel1))
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jTabbedPane2)
+            .addComponent(jSeparator2)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -64,30 +177,117 @@ public class KitchenDashboard extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2))
-                .addContainerGap(380, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane2))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        jTextField2.setText("");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String foodName = (String) jComboBox1.getSelectedItem();
+        int quantityToAdd = Integer.parseInt(jTextField2.getText().trim());
+
+        if (quantityToAdd <= 0) {
+            JOptionPane.showMessageDialog(null, "Please enter a positive quantity");
+            return;
+        }
+
+        String updateQuery = "UPDATE fooditems SET quantity = quantity + ? WHERE foodName = ?";
+        String insertQuery = "INSERT INTO kitchenupdates(foodName, quantity) VALUES (?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/crm",
+                "root",
+                envNew.password)) {
+
+            // Start transaction
+            conn.setAutoCommit(false);
+
+            try (
+                PreparedStatement pst = conn.prepareStatement(updateQuery);
+                PreparedStatement ps = conn.prepareStatement(insertQuery)) {
+
+                // Execute UPDATE
+                pst.setInt(1, quantityToAdd);
+                pst.setString(2, foodName);
+                int rowsAffected = pst.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    // Execute INSERT
+                    ps.setString(1, foodName);  // Note: foodName is first parameter in INSERT
+                    ps.setInt(2, quantityToAdd); // quantity is second parameter
+                    ps.executeUpdate();
+
+                    conn.commit(); // Commit both operations
+                    JOptionPane.showMessageDialog(null, "Quantity updated and record added successfully!");
+                } else {
+                    conn.rollback(); // Rollback if UPDATE failed
+                    JOptionPane.showMessageDialog(null, "No food item found with that name");
+                }
+
+            } catch (Exception ex) {
+                conn.rollback(); // Rollback on any error
+                throw ex; // Re-throw to outer catch block
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error updating records: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     public void setUserName(String userName) {
         jLabel3.setText(userName);
     }
+
+    public void loadFoodItemsToComboBox(JComboBox<String> comboBox) {
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/crm",
+                "root",
+                envNew.password); PreparedStatement pst = conn.prepareStatement("SELECT foodName FROM fooditems"); ResultSet rs = pst.executeQuery()) {
+
+            System.out.println("Connection Successful");
+
+            // Clear existing items
+            comboBox.removeAllItems();
+
+            // Add a default empty option (optional)
+            comboBox.addItem("-- Select Food Item --");
+
+            // Add items from database
+            while (rs.next()) {
+                comboBox.addItem(rs.getString("foodName"));
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Error loading food items: " + ex.getMessage());
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -124,9 +324,19 @@ public class KitchenDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
