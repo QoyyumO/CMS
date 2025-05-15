@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import javax.swing.JComboBox;
+import java.util.Timer;
+import java.util.TimerTask;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -18,13 +21,14 @@ import javax.swing.JComboBox;
 public class KitchenDashboard extends javax.swing.JFrame {
 
     env envNew = new env();
-
+    
     /**
      * Creates new form KitchenDashboard
      */
     public KitchenDashboard() {
         initComponents();
         loadFoodItemsToComboBox(jComboBox1);
+        new LowQuantityChecker().startMonitoring();
     }
 
     /**
@@ -50,6 +54,7 @@ public class KitchenDashboard extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,6 +158,8 @@ public class KitchenDashboard extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Update/Delete", jPanel5);
 
+        jLabel6.setText("jLabel6");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -162,9 +169,14 @@ public class KitchenDashboard extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6)
+                        .addGap(98, 98, 98))))
             .addComponent(jTabbedPane2)
             .addComponent(jSeparator2)
         );
@@ -173,14 +185,21 @@ public class KitchenDashboard extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTabbedPane2)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel6)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -196,10 +215,6 @@ public class KitchenDashboard extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -228,8 +243,7 @@ public class KitchenDashboard extends javax.swing.JFrame {
             conn.setAutoCommit(false);
 
             try (
-                PreparedStatement pst = conn.prepareStatement(updateQuery);
-                PreparedStatement ps = conn.prepareStatement(insertQuery)) {
+                    PreparedStatement pst = conn.prepareStatement(updateQuery); PreparedStatement ps = conn.prepareStatement(insertQuery)) {
 
                 // Execute UPDATE
                 pst.setInt(1, quantityToAdd);
@@ -260,6 +274,10 @@ public class KitchenDashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
     public void setUserName(String userName) {
         jLabel3.setText(userName);
     }
@@ -285,6 +303,61 @@ public class KitchenDashboard extends javax.swing.JFrame {
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error loading food items: " + ex.getMessage());
+        }
+    }
+
+    public class LowQuantityChecker {
+
+        private static final int LOW_QUANTITY_THRESHOLD = 5;
+        private static final int CHECK_INTERVAL_MINUTES = 5; // Check every 5 minutes
+
+        public void startMonitoring() {
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    checkLowQuantities();
+                }
+            }, 0, CHECK_INTERVAL_MINUTES * 60 * 1000);
+        }
+
+        private void checkLowQuantities() {
+            String query = "SELECT foodName, quantity FROM fooditems WHERE quantity <= ?";
+
+            try (Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/crm",
+                    "root",
+                    envNew.password); PreparedStatement ps = conn.prepareStatement(query)) {
+
+                ps.setInt(1, LOW_QUANTITY_THRESHOLD);
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    String foodName = rs.getString("foodName");
+                    int quantity = rs.getInt("quantity");
+
+                    // Show alert in Swing's Event Dispatch Thread
+                    SwingUtilities.invokeLater(() -> {
+                        showLowQuantityAlert(foodName, quantity);
+                    });
+                }
+
+            } catch (Exception ex) {
+                System.err.println("Error checking quantities: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+
+        private void showLowQuantityAlert(String foodName, int quantity) {
+            String message = String.format(
+                    "LOW STOCK ALERT!\n\nItem: %s\nCurrent Quantity: %d\n\nPlease restock immediately!",
+                    foodName, quantity);
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    message,
+                    "Low Stock Warning",
+                    JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -332,6 +405,7 @@ public class KitchenDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
