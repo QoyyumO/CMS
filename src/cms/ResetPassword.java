@@ -178,8 +178,8 @@ public class ResetPassword extends javax.swing.JFrame {
             {
                     String receiver = jTextField1.getText();
                     String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + pass + "       Remember your password";
-                    String senderEmail = "oyinlolaoyadeyi@gmail.com";
-                    String senderPassword = "zdthoatlgymtqjmg";
+                    String senderEmail = "cafeteriait7@gmail.com";
+                    String senderPassword = "carynuzwkesjaadv";
                     Properties props = new Properties();
                     props.put("mail.smtp.auth", "true");
                     props.put("mail.smtp.starttls.enable", "true");

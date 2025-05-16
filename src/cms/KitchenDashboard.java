@@ -28,7 +28,7 @@ public class KitchenDashboard extends javax.swing.JFrame {
     public KitchenDashboard() {
         initComponents();
         loadFoodItemsToComboBox(jComboBox1);
-        new LowQuantityChecker().startMonitoring();
+//        new LowQuantityChecker().startMonitoring();
     }
 
     /**
@@ -102,6 +102,11 @@ public class KitchenDashboard extends javax.swing.JFrame {
 
         jComboBox1.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -278,6 +283,10 @@ public class KitchenDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     public void setUserName(String userName) {
         jLabel3.setText(userName);
     }
@@ -306,60 +315,60 @@ public class KitchenDashboard extends javax.swing.JFrame {
         }
     }
 
-    public class LowQuantityChecker {
-
-        private static final int LOW_QUANTITY_THRESHOLD = 5;
-        private static final int CHECK_INTERVAL_MINUTES = 5; // Check every 5 minutes
-
-        public void startMonitoring() {
-            Timer timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    checkLowQuantities();
-                }
-            }, 0, CHECK_INTERVAL_MINUTES * 60 * 1000);
-        }
-
-        private void checkLowQuantities() {
-            String query = "SELECT foodName, quantity FROM fooditems WHERE quantity <= ?";
-
-            try (Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/crm",
-                    "root",
-                    envNew.password); PreparedStatement ps = conn.prepareStatement(query)) {
-
-                ps.setInt(1, LOW_QUANTITY_THRESHOLD);
-                ResultSet rs = ps.executeQuery();
-
-                while (rs.next()) {
-                    String foodName = rs.getString("foodName");
-                    int quantity = rs.getInt("quantity");
-
-                    // Show alert in Swing's Event Dispatch Thread
-                    SwingUtilities.invokeLater(() -> {
-                        showLowQuantityAlert(foodName, quantity);
-                    });
-                }
-
-            } catch (Exception ex) {
-                System.err.println("Error checking quantities: " + ex.getMessage());
-                ex.printStackTrace();
-            }
-        }
-
-        private void showLowQuantityAlert(String foodName, int quantity) {
-            String message = String.format(
-                    "LOW STOCK ALERT!\n\nItem: %s\nCurrent Quantity: %d\n\nPlease restock immediately!",
-                    foodName, quantity);
-
-            JOptionPane.showMessageDialog(
-                    null,
-                    message,
-                    "Low Stock Warning",
-                    JOptionPane.WARNING_MESSAGE);
-        }
-    }
+//    public class LowQuantityChecker {
+//
+//        private static final int LOW_QUANTITY_THRESHOLD = 5;
+//        private static final int CHECK_INTERVAL_MINUTES = 5; // Check every 5 minutes
+//
+//        public void startMonitoring() {
+//            Timer timer = new Timer();
+//            timer.scheduleAtFixedRate(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    checkLowQuantities();
+//                }
+//            }, 0, CHECK_INTERVAL_MINUTES * 60 * 1000);
+//        }
+//
+//        private void checkLowQuantities() {
+//            String query = "SELECT foodName, quantity FROM fooditems WHERE quantity <= ?";
+//
+//            try (Connection conn = DriverManager.getConnection(
+//                    "jdbc:mysql://localhost:3306/crm",
+//                    "root",
+//                    envNew.password); PreparedStatement ps = conn.prepareStatement(query)) {
+//
+//                ps.setInt(1, LOW_QUANTITY_THRESHOLD);
+//                ResultSet rs = ps.executeQuery();
+//
+//                while (rs.next()) {
+//                    String foodName = rs.getString("foodName");
+//                    int quantity = rs.getInt("quantity");
+//
+//                    // Show alert in Swing's Event Dispatch Thread
+//                    SwingUtilities.invokeLater(() -> {
+//                        showLowQuantityAlert(foodName, quantity);
+//                    });
+//                }
+//
+//            } catch (Exception ex) {
+//                System.err.println("Error checking quantities: " + ex.getMessage());
+//                ex.printStackTrace();
+//            }
+//        }
+//
+//        private void showLowQuantityAlert(String foodName, int quantity) {
+//            String message = String.format(
+//                    "LOW STOCK ALERT!\n\nItem: %s\nCurrent Quantity: %d\n\nPlease restock immediately!",
+//                    foodName, quantity);
+//
+//            JOptionPane.showMessageDialog(
+//                    null,
+//                    message,
+//                    "Low Stock Warning",
+//                    JOptionPane.WARNING_MESSAGE);
+//        }
+//    }
 
     /**
      * @param args the command line arguments
