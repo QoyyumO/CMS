@@ -4,13 +4,26 @@
  */
 package cms;
 
+import java.awt.Graphics2D;
+import java.awt.List;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,15 +32,25 @@ import javax.swing.table.DefaultTableModel;
  * @author Ayomide
  */
 public class TicketingDashboard extends javax.swing.JFrame {
+
     env envNew = new env();
     private BigDecimal runningTotal = BigDecimal.ZERO;
+    private Map<String, BigDecimal> foodPrices = new HashMap<>();
+
     /**
      * Creates new form TicketingDashboard
      */
     public TicketingDashboard() {
         initComponents();
-        loadFoodItemsToComboBox(jComboBox1);
-        
+        jComboBox1.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent evt) {
+                comboBoxItemStateChanged(evt);
+            }
+        });
+
+        loadFoodItemsToComboBox(jComboBox1, jLabel8);
+
     }
 
     /**
@@ -53,6 +76,9 @@ public class TicketingDashboard extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,6 +144,11 @@ public class TicketingDashboard extends javax.swing.JFrame {
 
         jButton3.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
         jButton3.setText("Delete Selected Item");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jTextField1.setText("jTextField1");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -128,32 +159,42 @@ public class TicketingDashboard extends javax.swing.JFrame {
 
         jLabel6.setText("total");
 
+        jLabel7.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
+        jLabel7.setText("Price");
+
+        jLabel8.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
+        jLabel8.setText("jLabel8");
+
+        jLabel9.setText("jLabel9");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(72, 72, 72)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel2)
                         .addGap(27, 27, 27)
                         .addComponent(jLabel3))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                        .addComponent(jLabel4)
                         .addGap(18, 18, 18)
+                        .addComponent(jComboBox1, 0, 266, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox1, 0, 266, Short.MAX_VALUE)
-                            .addComponent(jTextField1)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton1)))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -175,7 +216,9 @@ public class TicketingDashboard extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -184,11 +227,14 @@ public class TicketingDashboard extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGap(22, 22, 22)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(81, 81, 81))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -198,7 +244,7 @@ public class TicketingDashboard extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton3))
-                .addContainerGap(321, Short.MAX_VALUE))
+                .addContainerGap(344, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -218,95 +264,293 @@ public class TicketingDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void loadFoodItemsToComboBox(JComboBox<String> comboBox) {
+    public void loadFoodItemsToComboBox(JComboBox<String> comboBox, JLabel priceLabel) {
         try (Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/crm",
                 "root",
-                envNew.password); PreparedStatement pst = conn.prepareStatement("SELECT foodName FROM fooditems"); ResultSet rs = pst.executeQuery()) {
+                envNew.password); PreparedStatement pst = conn.prepareStatement(
+                        "SELECT foodName, price FROM fooditems WHERE quantity > 0 ORDER BY foodName"); ResultSet rs = pst.executeQuery()) {
 
-            System.out.println("Connection Successful");
-
-            // Clear existing items
             comboBox.removeAllItems();
-
-            // Add a default empty option (optional)
             comboBox.addItem("-- Select Food Item --");
+            priceLabel.setText(" ₦0.00");
+            foodPrices.clear(); // Clear previous prices
 
-            // Add items from database
             while (rs.next()) {
-                comboBox.addItem(rs.getString("foodName"));
+                String foodName = rs.getString("foodName");
+                BigDecimal price = rs.getBigDecimal("price");
+                comboBox.addItem(foodName);
+                foodPrices.put(foodName, price); // Cache the price
             }
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error loading food items: " + ex.getMessage());
         }
     }
-    
+
+    private void comboBoxItemStateChanged(ItemEvent evt) {
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            Object selectedItem = jComboBox1.getSelectedItem();
+
+            if (selectedItem == null || "-- Select Food Item --".equals(selectedItem.toString())) {
+                jLabel8.setText("");
+                return;
+            }
+
+            BigDecimal price = foodPrices.get(selectedItem.toString());
+            jLabel8.setText(price != null ? String.format(" ₦%.2f", price) : "Price unavailable");
+        }
+    }
+
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-                // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        // TODO add your handling code here:
         try {
-    // Get quantity as integer
-    int quantity = Integer.parseInt(jTextField1.getText());
-    String foodItem = (String) jComboBox1.getSelectedItem();
-    
-    Class.forName("com.mysql.cj.jdbc.Driver");
-    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", "AyMaX6250$");
-    
-    // Get price from database
-    PreparedStatement ps = con.prepareStatement("SELECT price FROM foodItems WHERE foodName = ?");
-    ps.setString(1, foodItem);
-    ResultSet rs = ps.executeQuery();
-    
-    if (rs.next()) {
-        // Use BigDecimal for decimal values
-        BigDecimal price = rs.getBigDecimal(1);
-        // Calculate total
-        BigDecimal total = price.multiply(new BigDecimal(quantity));
-        
-        runningTotal = runningTotal.add(total);
-        
-        // Create table row data
-        String[] data = {
-            foodItem,
-            String.valueOf(quantity), // Format price with 2 decimals
-            total.setScale(2, RoundingMode.HALF_UP).toString()            // Format total with 2 decimals
-        };
-        
-        // Add row to table
-        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
-        tableModel.addRow(data);
-        
-        jLabel6.setText(runningTotal.toString());
-    }
-    
-    // Close resources
-    rs.close();
-    ps.close();
-    con.close();
-    
-} catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(rootPane, "Please enter a valid quantity number!");
-} catch (Exception e) {
-    System.out.println(e);
-    JOptionPane.showMessageDialog(rootPane, "Error occurred: " + e.getMessage());
-}
-         // TODO add your handling code here:
+            // Get quantity as integer
+            int quantity = Integer.parseInt(jTextField1.getText());
+            String foodItem = (String) jComboBox1.getSelectedItem();
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
+
+            // Get price from database
+            PreparedStatement ps = con.prepareStatement("SELECT price, quantity FROM foodItems WHERE foodName = ?");
+            ps.setString(1, foodItem);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int availableQuantity = rs.getInt("quantity");
+
+                if (quantity <= 0) {
+                    JOptionPane.showMessageDialog(rootPane, "Please enter a positive quantity!");
+                    return;
+                }
+
+                if (quantity > availableQuantity) {
+                    JOptionPane.showMessageDialog(rootPane,
+                            "Only " + availableQuantity + " items available!\n"
+                            + "Please enter a quantity between 1 and " + availableQuantity);
+                    return;
+                }
+                // Use BigDecimal for decimal values
+                BigDecimal price = rs.getBigDecimal(1);
+                // Calculate total
+                BigDecimal total = price.multiply(new BigDecimal(quantity));
+
+                runningTotal = runningTotal.add(total);
+
+                // Create table row data
+                String[] data = {
+                    foodItem,
+                    String.valueOf(quantity), // Format price with 2 decimals
+                    total.setScale(2, RoundingMode.HALF_UP).toString() // Format total with 2 decimals
+                };
+
+                // Add row to table
+                DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+                tableModel.addRow(data);
+
+                jLabel6.setText(runningTotal.toString());
+
+            }
+
+            // Close resources
+            rs.close();
+            ps.close();
+            con.close();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Please enter a valid quantity number!");
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(rootPane, "Error occurred: " + e.getMessage());
+        }
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        try {
+            // 1. Generate order ID
+            String orderId = generateOrderId();
+
+            // Get customer email (you'll need to have this from your UI)
+            String email = jLabel9.getText().trim(); // Assuming you have an email field
+
+            // 2. Insert into orders table
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
+
+            // Start transaction
+            con.setAutoCommit(false);
+
+            try {
+                // Insert order
+                PreparedStatement orderStmt = con.prepareStatement(
+                        "INSERT INTO orders (orderId, email, totalCost, status) VALUES (?, ?, ?, 0)");
+                orderStmt.setString(1, orderId);
+                orderStmt.setString(2, email);
+                orderStmt.setBigDecimal(3, runningTotal);
+                orderStmt.executeUpdate();
+                // 3. Insert all order items
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                PreparedStatement itemStmt = con.prepareStatement(
+                        "INSERT INTO orderitems (orderId, foodName, quantity, subPrice) VALUES (?, ?, ?, ?)");
+
+                StringBuilder receipt = new StringBuilder();
+                receipt.append("=========== RECEIPT ===========\n");
+                receipt.append("Order ID: ").append(orderId).append("\n");
+                receipt.append("------------------------------\n");
+                receipt.append(String.format("%-20s %-10s %-10s\n", "Item", "Qty", "Price"));
+                BigDecimal total = BigDecimal.ZERO;
+
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    String foodName = (String) model.getValueAt(i, 0);
+                    // Handle quantity (may be String or Number)
+                    int quantity;
+                    Object qtyValue = model.getValueAt(i, 1);
+                    if (qtyValue instanceof Number number) {
+                        quantity = number.intValue();
+                    } else {
+                        quantity = Integer.parseInt(qtyValue.toString());
+                    }
+
+                    // Handle subPrice (String to BigDecimal conversion)
+                    BigDecimal subPrice;
+                    Object priceValue = model.getValueAt(i, 2);
+                    switch (priceValue) {
+                        case BigDecimal bigDecimal ->
+                            subPrice = bigDecimal;
+                        case Number number ->
+                            subPrice = BigDecimal.valueOf(number.doubleValue());
+                        default -> // Safest way to convert String to BigDecimal
+                            subPrice = new BigDecimal(priceValue.toString().replaceAll("[^\\d.]", ""));
+                    }
+
+                    total = total.add(subPrice);
+
+                    receipt.append(String.format("%-20s %-10d %-10.2f\n", foodName, quantity, subPrice));
+
+                    itemStmt.setString(1, orderId);
+                    itemStmt.setString(2, foodName);
+                    itemStmt.setInt(3, quantity);
+                    itemStmt.setBigDecimal(4, subPrice);
+                    itemStmt.addBatch();
+
+                    // Update available quantity in fooditems
+                    PreparedStatement updateStmt = con.prepareStatement(
+                            "UPDATE fooditems SET quantity = quantity - ? WHERE foodName = ?");
+                    updateStmt.setInt(1, quantity);
+                    updateStmt.setString(2, foodName);
+                    updateStmt.executeUpdate();
+                }
+                receipt.append("------------------------------\n");
+                receipt.append(String.format("TOTAL: %.2f\n", total));
+                receipt.append("==============================");
+
+                // Print receipt (simple console print or hook into printer)
+                System.out.println(receipt.toString());
+
+                PrinterJob job = PrinterJob.getPrinterJob();
+                job.setPrintable((graphics, pageFormat, pageIndex) -> {
+                    if (pageIndex > 0) {
+                        return Printable.NO_SUCH_PAGE;
+                    }
+
+                    Graphics2D g2d = (Graphics2D) graphics;
+                    g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+
+                    int y = 20;
+                    for (String line : receipt.toString().split("\n")) {
+                        g2d.drawString(line, 10, y);
+                        y += 15;
+                    }
+
+                    return Printable.PAGE_EXISTS;
+                });
+
+                if (job.printDialog()) {
+                    try {
+                        job.print();
+                    } catch (PrinterException pe) {
+                        pe.printStackTrace();
+                    }
+                }
+                itemStmt.executeBatch();
+                con.commit();
+
+                JOptionPane.showMessageDialog(this, "Order placed successfully!\nOrder ID: " + orderId);
+
+                // Clear the table and reset total
+                model.setRowCount(0);
+                runningTotal = BigDecimal.ZERO;
+                jLabel6.setText("0.00");
+            } catch (Exception e) {
+                // Rollback on error
+                System.out.println(e);
+                con.rollback();
+                throw e;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
+        int row = jTable1.getSelectedRow();
+        tableModel.removeRow(row);
+    }//GEN-LAST:event_jButton3ActionPerformed
     public void setUserName(String userName) {
         jLabel3.setText(userName);
     }
+    public void setEmail(String email) {
+        jLabel9.setText(email);
+    }
+    private String generateOrderId() throws Exception {
+        // Format: DDMMYY + 4-digit sequence (e.g., 1705250001)
+        SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
+        String datePart = dateFormat.format(new Date());
+
+        // Get the next sequence number for today
+        Connection con = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
+
+            // Check the highest order number for today
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT MAX(orderId) FROM orders WHERE orderId LIKE ?");
+            ps.setString(1, datePart + "%");
+            ResultSet rs = ps.executeQuery();
+
+            int nextSeq = 1; // Default to 0001 if no orders today
+
+            if (rs.next()) {
+                String lastOrderId = rs.getString(1);
+                if (lastOrderId != null && lastOrderId.startsWith(datePart)) {
+                    int lastSeq = Integer.parseInt(lastOrderId.substring(6));
+                    nextSeq = lastSeq + 1;
+                }
+            }
+
+            return datePart + String.format("%04d", nextSeq);
+
+        } finally {
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -353,6 +597,9 @@ public class TicketingDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

@@ -176,6 +176,7 @@ public class Login extends javax.swing.JFrame {
                  if (role1.equals(rl)) {
                      TicketingDashboard page = new TicketingDashboard();
                      page.setUserName(n);
+                     page.setEmail(e);
                      page.show();
                      dispose();
                  } else if (role2.equals(rl)) {
@@ -218,7 +219,7 @@ public class Login extends javax.swing.JFrame {
             return c;
         }
     }
-
+ 
     /**
      * @param args the command line arguments
      */
