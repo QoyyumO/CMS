@@ -182,6 +182,7 @@ public class Login extends javax.swing.JFrame {
                  } else if (role2.equals(rl)) {
                      ServerDashboard page = new ServerDashboard();
                      page.setUserName(n);
+                     page.setEmail(e);
                      page.show();
                      dispose();
                  } else if (role3.equals(rl)) {
