@@ -359,7 +359,7 @@ public class Registration extends javax.swing.JFrame {
         if (phone.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please enter a phone number!");
         }
-        String email = jTextField4.getText();
+        String email = jTextField4.getText().toLowerCase();
         if (email.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please enter an email!");
         }

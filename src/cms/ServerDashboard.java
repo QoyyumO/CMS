@@ -4,12 +4,15 @@
  */
 package cms;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 /**
  *
@@ -18,12 +21,28 @@ import javax.swing.JOptionPane;
 public class ServerDashboard extends javax.swing.JFrame {
 
     env envNew = new env();
+    private final Timer refreshTimer;
 
     /**
      * Creates new form ServerDashboard
      */
     public ServerDashboard() {
         initComponents();
+        refreshTimer = new Timer(10000, e -> refreshOrdersTable());
+        // Start the timer when the window is opened
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                refreshTimer.start();
+                // Do an immediate refresh when window opens
+                refreshOrdersTable();
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                refreshTimer.stop();
+            }
+        });
     }
 
     /**
@@ -45,7 +64,6 @@ public class ServerDashboard extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,13 +109,6 @@ public class ServerDashboard extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Get from Database");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -126,9 +137,7 @@ public class ServerDashboard extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(14, 14, 14))))
+                        .addGap(14, 383, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,12 +153,10 @@ public class ServerDashboard extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jButton1))
+                .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton2)
@@ -169,51 +176,49 @@ public class ServerDashboard extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    // Method to refresh the orders table
+    private void refreshOrdersTable() {
         try {
             DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
-            tableModel.setRowCount(0);
+            tableModel.setRowCount(0); // Clear existing rows
+
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
-            PreparedStatement ps = con.prepareStatement("select orderid from orders where status = 0");
-            ResultSet rs = ps.executeQuery();
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password); PreparedStatement ps = con.prepareStatement("SELECT orderid FROM orders WHERE status = 0"); ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
-                String orderid = rs.getString(1);
-
-                String[] row = {orderid};
-                tableModel.addRow(row);
+                while (rs.next()) {
+                    String orderid = rs.getString(1);
+                    String[] row = {orderid};
+                    tableModel.addRow(row);
+                }
             }
-            jTable1.setModel(tableModel);
         } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error refreshing orders: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         try {
             String email = jLabel4.getText().trim();
             DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
-            int row =jTable1.getSelectedRow();
+            int row = jTable1.getSelectedRow();
             String orderId = tableModel.getValueAt(row, 0).toString();
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
             PreparedStatement ps = con.prepareStatement("UPDATE orders SET status = 1, servers_email = ?, served_at = CURRENT_TIMESTAMP WHERE orderid = ?");
             ps.setString(1, email);
             ps.setString(2, orderId);
-           int rowsAffected = ps.executeUpdate();
-           if (rowsAffected > 0) {
-            JOptionPane.showMessageDialog(null, "Order updated successfully!");
-        } else {
-            JOptionPane.showMessageDialog(null, "No order was updated!");
-        }
-
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Order updated successfully!");
+            } else {
+                JOptionPane.showMessageDialog(null, "No order was updated!");
+            }
 
         } catch (Exception e) {
         }
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
     public void setUserName(String userName) {
         jLabel3.setText(userName);
@@ -259,7 +264,6 @@ public class ServerDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

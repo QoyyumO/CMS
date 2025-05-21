@@ -184,7 +184,7 @@ public class webcam extends javax.swing.JFrame {
             ImageIcon imageico = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(registrationForm.jLabel7.getWidth(), registrationForm.jLabel7.getHeight(), Image.SCALE_DEFAULT));
             registrationForm.jLabel7.setIcon(imageico);
             
-            // Add this code to update the photo byte array
+            // update the photo byte array
             File imageFile = new File(Filename);
             FileInputStream fis = new FileInputStream(imageFile);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

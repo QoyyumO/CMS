@@ -45,7 +45,6 @@ public class KitchenDashboard extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -53,7 +52,6 @@ public class KitchenDashboard extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -69,7 +67,7 @@ public class KitchenDashboard extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jLabel3.setText("jLabel3");
 
-        jPanel4.setBackground(new java.awt.Color(235, 199, 158));
+        jPanel4.setBackground(new java.awt.Color(102, 255, 255));
 
         jLabel4.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
         jLabel4.setText("Food Item");
@@ -148,21 +146,6 @@ public class KitchenDashboard extends javax.swing.JFrame {
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Insert", jPanel4);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 472, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 241, Short.MAX_VALUE)
-        );
-
-        jTabbedPane2.addTab("Update/Delete", jPanel5);
-
         jLabel6.setText("jLabel6");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -171,7 +154,9 @@ public class KitchenDashboard extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -179,32 +164,27 @@ public class KitchenDashboard extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6)
-                        .addGap(98, 98, 98))))
-            .addComponent(jTabbedPane2)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addComponent(jSeparator2)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTabbedPane2)
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel6)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -215,11 +195,15 @@ public class KitchenDashboard extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -228,6 +212,7 @@ public class KitchenDashboard extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String email = jLabel4.getText();
         String foodName = (String) jComboBox1.getSelectedItem();
         int quantityToAdd = Integer.parseInt(jTextField2.getText().trim());
 
@@ -237,41 +222,42 @@ public class KitchenDashboard extends javax.swing.JFrame {
         }
 
         String updateQuery = "UPDATE fooditems SET quantity = quantity + ? WHERE foodName = ?";
-        String insertQuery = "INSERT INTO kitchenupdates(foodName, quantity) VALUES (?, ?)";
+        String insertQuery = "INSERT INTO kitchenupdates(foodName, quantity,email) VALUES (?, ?, ?)";
 
         try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/crm",
-                "root",
-                envNew.password)) {
+            "jdbc:mysql://localhost:3306/crm",
+            "root",
+            envNew.password)) {
 
-            // Start transaction
-            conn.setAutoCommit(false);
+        // Start transaction
+        conn.setAutoCommit(false);
 
-            try (
-                    PreparedStatement pst = conn.prepareStatement(updateQuery); PreparedStatement ps = conn.prepareStatement(insertQuery)) {
+        try (
+            PreparedStatement pst = conn.prepareStatement(updateQuery); PreparedStatement ps = conn.prepareStatement(insertQuery)) {
 
-                // Execute UPDATE
-                pst.setInt(1, quantityToAdd);
-                pst.setString(2, foodName);
-                int rowsAffected = pst.executeUpdate();
+            // Execute UPDATE
+            pst.setInt(1, quantityToAdd);
+            pst.setString(2, foodName);
+            int rowsAffected = pst.executeUpdate();
 
-                if (rowsAffected > 0) {
-                    // Execute INSERT
-                    ps.setString(1, foodName);  // Note: foodName is first parameter in INSERT
-                    ps.setInt(2, quantityToAdd); // quantity is second parameter
-                    ps.executeUpdate();
+            if (rowsAffected > 0) {
+                // Execute INSERT
+                ps.setString(1, foodName);  // Note: foodName is first parameter in INSERT
+                ps.setInt(2, quantityToAdd); // quantity is second parameter
+                ps.setString(3, email); //email of the person 
+                ps.executeUpdate();
 
-                    conn.commit(); // Commit both operations
-                    JOptionPane.showMessageDialog(null, "Quantity updated and record added successfully!");
-                } else {
-                    conn.rollback(); // Rollback if UPDATE failed
-                    JOptionPane.showMessageDialog(null, "No food item found with that name");
-                }
-
-            } catch (Exception ex) {
-                conn.rollback(); // Rollback on any error
-                throw ex; // Re-throw to outer catch block
+                conn.commit(); // Commit both operations
+                JOptionPane.showMessageDialog(null, "Quantity updated and record added successfully!");
+            } else {
+                conn.rollback(); // Rollback if UPDATE failed
+                JOptionPane.showMessageDialog(null, "No food item found with that name");
             }
+
+        } catch (Exception ex) {
+            conn.rollback(); // Rollback on any error
+            throw ex; // Re-throw to outer catch block
+        }
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Error updating records: " + ex.getMessage());
@@ -283,14 +269,12 @@ public class KitchenDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     public void setUserName(String userName) {
         jLabel3.setText(userName);
     }
-
+    public void setEmail(String email) {
+        jLabel6.setText(email);
+    }
     public void loadFoodItemsToComboBox(JComboBox<String> comboBox) {
         try (Connection conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/crm",
@@ -417,9 +401,7 @@ public class KitchenDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

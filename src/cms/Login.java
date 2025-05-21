@@ -155,7 +155,7 @@ public class Login extends javax.swing.JFrame {
             String role3 = "Kitchen";
             String role4 = "IT";
             String role5 = "Head of Unit";
-            String email = jTextField1.getText();
+            String email = jTextField1.getText().toLowerCase();
             String pass = jPasswordField1.getText();
             String password = Hash(pass);
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -188,6 +188,7 @@ public class Login extends javax.swing.JFrame {
                  } else if (role3.equals(rl)) {
                      KitchenDashboard page = new KitchenDashboard();
                      page.setUserName(n);
+                     page.setEmail(e);
                      page.show();
                      dispose();
                  } else if (role4.equals(rl)) {
