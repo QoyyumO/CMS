@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.List;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -22,9 +24,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,6 +42,7 @@ public class TicketingDashboard extends javax.swing.JFrame {
     env envNew = new env();
     private BigDecimal runningTotal = BigDecimal.ZERO;
     private Map<String, BigDecimal> foodPrices = new HashMap<>();
+    private final Timer refreshTimer;
 
     /**
      * Creates new form TicketingDashboard
@@ -50,6 +57,25 @@ public class TicketingDashboard extends javax.swing.JFrame {
         });
 
         loadFoodItemsToComboBox(jComboBox1, jLabel8);
+
+        // Initialize the timer with correct parameters
+        refreshTimer = new Timer(10000, e -> loadFoodItemsToComboBox(jComboBox1, jLabel8));
+
+        // Window listener to control timer
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                // Initial load
+                loadFoodItemsToComboBox(jComboBox1, jLabel8);
+                // Start periodic refresh
+                refreshTimer.start();
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                refreshTimer.stop();
+            }
+        });
 
     }
 
@@ -157,6 +183,7 @@ public class TicketingDashboard extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jLabel6.setText("total");
 
         jLabel7.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
@@ -263,27 +290,40 @@ public class TicketingDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void loadFoodItemsToComboBox(JComboBox<String> comboBox, JLabel priceLabel) {
-        try (Connection conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/crm",
-                "root",
-                envNew.password); PreparedStatement pst = conn.prepareStatement(
-                        "SELECT foodName, price FROM fooditems WHERE quantity > 0 ORDER BY foodName"); ResultSet rs = pst.executeQuery()) {
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                try (Connection conn = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/crm",
+                        "root",
+                        envNew.password); PreparedStatement pst = conn.prepareStatement(
+                                "SELECT foodName, price FROM fooditems WHERE quantity > 0 ORDER BY foodName"); ResultSet rs = pst.executeQuery()) {
 
-            comboBox.removeAllItems();
-            comboBox.addItem("-- Select Food Item --");
-            priceLabel.setText(" ₦0.00");
-            foodPrices.clear(); // Clear previous prices
+                    final DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+                    model.addElement("-- Select Food Item --");
+                    final Map<String, BigDecimal> newFoodPrices = new HashMap<>();
 
-            while (rs.next()) {
-                String foodName = rs.getString("foodName");
-                BigDecimal price = rs.getBigDecimal("price");
-                comboBox.addItem(foodName);
-                foodPrices.put(foodName, price); // Cache the price
+                    while (rs.next()) {
+                        String foodName = rs.getString("foodName");
+                        BigDecimal price = rs.getBigDecimal("price");
+                        model.addElement(foodName);
+                        newFoodPrices.put(foodName, price);
+                    }
+
+                    SwingUtilities.invokeLater(() -> {
+                        comboBox.setModel(model);
+                        foodPrices.clear();
+                        foodPrices.putAll(newFoodPrices);
+                        priceLabel.setText(" ₦0.00");
+                    });
+
+                } catch (Exception ex) {
+                    SwingUtilities.invokeLater(()
+                            -> JOptionPane.showMessageDialog(null, "Error loading food items: " + ex.getMessage()));
+                }
+                return null;
             }
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error loading food items: " + ex.getMessage());
-        }
+        }.execute();
     }
 
     private void comboBoxItemStateChanged(ItemEvent evt) {
@@ -503,16 +543,58 @@ public class TicketingDashboard extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
-        int row = jTable1.getSelectedRow();
-        tableModel.removeRow(row);
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int selectedRow = jTable1.getSelectedRow();
+
+        // Validate selection
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Please select a row to remove",
+                    "No Selection",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Get the subPrice value from column 2 (index 2)
+            Object priceValue = model.getValueAt(selectedRow, 2);
+            BigDecimal subPrice;
+
+            // Convert to BigDecimal using your existing logic
+            switch (priceValue) {
+                case BigDecimal bigDecimal ->
+                    subPrice = bigDecimal;
+                case Number number ->
+                    subPrice = BigDecimal.valueOf(number.doubleValue());
+                default -> // Safest way to convert String to BigDecimal
+                    subPrice = new BigDecimal(priceValue.toString().replaceAll("[^\\d.]", ""));
+            }
+
+            // Subtract from running total
+            runningTotal = runningTotal.subtract(subPrice);
+
+            // Update display (assuming you have a label for the total)
+            jLabel6.setText(runningTotal.setScale(2, RoundingMode.HALF_UP).toString());
+
+            // Remove the row
+            model.removeRow(selectedRow);
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error removing row: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_jButton3ActionPerformed
     public void setUserName(String userName) {
         jLabel3.setText(userName);
     }
+
     public void setEmail(String email) {
         jLabel9.setText(email);
     }
+
     private String generateOrderId() throws Exception {
         // Format: DDMMYY + 4-digit sequence (e.g., 1705250001)
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
