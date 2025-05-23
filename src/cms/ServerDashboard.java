@@ -11,7 +11,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 /**
@@ -19,16 +22,23 @@ import javax.swing.Timer;
  * @author Ayomide
  */
 public class ServerDashboard extends javax.swing.JFrame {
-
+    private Set<String> lowStockAlertedItems = new HashSet<>();
     env envNew = new env();
     private final Timer refreshTimer;
+    private final Timer refreshTime;
 
     /**
      * Creates new form ServerDashboard
      */
     public ServerDashboard() {
         initComponents();
-        refreshTimer = new Timer(10000, e -> refreshOrdersTable());
+        refreshTimer = new Timer(10000, e -> {
+            refreshOrdersTable();
+        });
+        refreshTime = new Timer(1000, e -> {
+            checkLowStockItems();
+        });
+        refreshTime.start();
         // Start the timer when the window is opened
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -198,7 +208,6 @@ public class ServerDashboard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     // Method to refresh the orders table
-
     private void refreshOrdersTable() {
         try {
             DefaultTableModel tableModel = (DefaultTableModel) jTable1.getModel();
@@ -219,6 +228,51 @@ public class ServerDashboard extends javax.swing.JFrame {
                     "Database Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
+     private void checkLowStockItems() {
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/crm",
+                "root",
+                envNew.password); PreparedStatement pst = conn.prepareStatement(
+                        "SELECT foodName, quantity FROM fooditems "
+                        + "WHERE quantity BETWEEN 1 AND 5")) {
+
+            ResultSet rs = pst.executeQuery();
+            Set<String> currentLowStockItems = new HashSet<>();
+            StringBuilder alertMessage = new StringBuilder();
+
+            // Check current low stock items
+            while (rs.next()) {
+                String foodName = rs.getString("foodName");
+                int quantity = rs.getInt("quantity");
+                currentLowStockItems.add(foodName);
+
+                // If this is a new low stock item, add to alert
+                if (!lowStockAlertedItems.contains(foodName)) {
+                    alertMessage.append(String.format("- %s (Remaining: %d)%n", foodName, quantity));
+                }
+            }
+
+            // Show alert if there are new low stock items
+            if (alertMessage.length() > 0) {
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Low Stock Alert:\n" + alertMessage.toString(),
+                            "Inventory Warning",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                });
+            }
+
+            // Update our tracking set
+            lowStockAlertedItems = currentLowStockItems;
+
+        } catch (Exception ex) {
+            System.err.println("Error checking low stock: " + ex.getMessage());
+        }
+    }
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         try {

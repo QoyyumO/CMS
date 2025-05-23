@@ -21,7 +21,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,6 +35,7 @@ public class HOUDashboard extends javax.swing.JFrame {
 
     env envNew = new env();
     private final Timer refreshTimer;
+    private Set<String> lowStockAlertedItems = new HashSet<>();
 
     /**
      * Creates new form HOUDashboard
@@ -45,6 +49,7 @@ public class HOUDashboard extends javax.swing.JFrame {
             loadDailyRealTimeServingSatus();
             loadDailyRealTimeUserActivities();
             loadPopularFoodItems();
+            checkLowStockItems();
         });
         refreshTimer.start();
     }
@@ -186,123 +191,167 @@ public class HOUDashboard extends javax.swing.JFrame {
     }
 
     private void loadDailyRealTimeUserActivities() {
-    DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
-    model.setRowCount(0); // Clear existing data
-    
-    // Set column headers
-    String[] columnNames = {"User Email", "Activity Type", "Details", "Time"};
-    model.setColumnIdentifiers(columnNames);
+        DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
+        model.setRowCount(0); // Clear existing data
 
-    try (Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/crm",
-            "root",
-            envNew.password)) {
-        
-        // Get today's date in YYYY-MM-DD format
-        String today = LocalDate.now().toString();
-        
-        // 1. Get order creators (ticketers)
-        String ticketersQuery = "SELECT orderId, ticketers_email, created_at FROM orders " +
-                              "WHERE DATE(created_at) = ?";
-        try (PreparedStatement pst = conn.prepareStatement(ticketersQuery)) {
-            pst.setString(1, today);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                model.addRow(new Object[]{
-                    rs.getString("ticketers_email"),
-                    "Created Order",
-                    "Order ID: " + rs.getString("orderId"),
-                    rs.getTimestamp("created_at")
-                });
+        // Set column headers
+        String[] columnNames = {"User Email", "Activity Type", "Details", "Time"};
+        model.setColumnIdentifiers(columnNames);
+
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/crm",
+                "root",
+                envNew.password)) {
+
+            // Get today's date in YYYY-MM-DD format
+            String today = LocalDate.now().toString();
+
+            // 1. Get order creators (ticketers)
+            String ticketersQuery = "SELECT orderId, ticketers_email, created_at FROM orders "
+                    + "WHERE DATE(created_at) = ?";
+            try (PreparedStatement pst = conn.prepareStatement(ticketersQuery)) {
+                pst.setString(1, today);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("ticketers_email"),
+                        "Created Order",
+                        "Order ID: " + rs.getString("orderId"),
+                        rs.getTimestamp("created_at")
+                    });
+                }
             }
-        }
-        
-        // 2. Get order servers
-        String serversQuery = "SELECT orderId, servers_email, served_at FROM orders " +
-                            "WHERE DATE(served_at) = ? AND servers_email IS NOT NULL";
-        try (PreparedStatement pst = conn.prepareStatement(serversQuery)) {
-            pst.setString(1, today);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                model.addRow(new Object[]{
-                    rs.getString("servers_email"),
-                    "Served Order",
-                    "Order ID: " + rs.getString("orderId"),
-                    rs.getTimestamp("served_at")
-                });
+
+            // 2. Get order servers
+            String serversQuery = "SELECT orderId, servers_email, served_at FROM orders "
+                    + "WHERE DATE(served_at) = ? AND servers_email IS NOT NULL";
+            try (PreparedStatement pst = conn.prepareStatement(serversQuery)) {
+                pst.setString(1, today);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("servers_email"),
+                        "Served Order",
+                        "Order ID: " + rs.getString("orderId"),
+                        rs.getTimestamp("served_at")
+                    });
+                }
             }
-        }
-        
-        // 3. Get kitchen updates
-        String kitchenQuery = "SELECT k.foodName, k.quantity, k.added_at, k.email, f.price " +
-                            "FROM kitchenupdates k JOIN fooditems f ON k.foodName = f.foodName " +
-                            "WHERE DATE(k.added_at) = ?";
-        try (PreparedStatement pst = conn.prepareStatement(kitchenQuery)) {
-            pst.setString(1, today);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                model.addRow(new Object[]{
-                    rs.getString("email"),
-                    "Kitchen Update",
-                    String.format("Updated %s by %d (Price: $%.2f)", 
-                                rs.getString("foodName"),
-                                rs.getInt("quantity"),
-                                rs.getBigDecimal("price")),
-                    rs.getTimestamp("added_at")
-                });
+
+            // 3. Get kitchen updates
+            String kitchenQuery = "SELECT k.foodName, k.quantity, k.added_at, k.email, f.price "
+                    + "FROM kitchenupdates k JOIN fooditems f ON k.foodName = f.foodName "
+                    + "WHERE DATE(k.added_at) = ?";
+            try (PreparedStatement pst = conn.prepareStatement(kitchenQuery)) {
+                pst.setString(1, today);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    model.addRow(new Object[]{
+                        rs.getString("email"),
+                        "Kitchen Update",
+                        String.format("Updated %s by %d (Price: $%.2f)",
+                        rs.getString("foodName"),
+                        rs.getInt("quantity"),
+                        rs.getBigDecimal("price")),
+                        rs.getTimestamp("added_at")
+                    });
+                }
             }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error loading user activities: " + ex.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
-        
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, 
-            "Error loading user activities: " + ex.getMessage(),
-            "Database Error", 
-            JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
     }
-}
-    
+
     private void loadPopularFoodItems() {
-    DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
-    model.setRowCount(0); // Clear existing data
-    
-    // Set column headers
-    String[] columnNames = {"Food Name", "Total Orders", "Total Quantity", "Total Revenue"};
-    model.setColumnIdentifiers(columnNames);
+        DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+        model.setRowCount(0); // Clear existing data
 
-    try (Connection conn = DriverManager.getConnection(
-            "jdbc:mysql://localhost:3306/crm",
-            "root",
-            envNew.password);
-         PreparedStatement pst = conn.prepareStatement(
-            "SELECT oi.foodName, " +
-            "COUNT(DISTINCT oi.orderId) as totalOrders, " +
-            "SUM(oi.quantity) as totalQuantity, " +
-            "SUM(oi.subPrice) as totalRevenue " +
-            "FROM orderitems oi " +
-            "JOIN fooditems f ON oi.foodName = f.foodName " +
-            "GROUP BY oi.foodName " +
-            "ORDER BY totalQuantity DESC")) {
+        // Set column headers
+        String[] columnNames = {"Food Name", "Total Orders", "Total Quantity", "Total Revenue"};
+        model.setColumnIdentifiers(columnNames);
 
-        ResultSet rs = pst.executeQuery();
-        
-        while (rs.next()) {
-            model.addRow(new Object[]{
-                rs.getString("foodName"),
-                rs.getInt("totalOrders"),
-                rs.getInt("totalQuantity"),
-                "₦" + String.format("%,.2f", rs.getBigDecimal("totalRevenue"))
-            });
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/crm",
+                "root",
+                envNew.password); PreparedStatement pst = conn.prepareStatement(
+                        "SELECT oi.foodName, "
+                        + "COUNT(DISTINCT oi.orderId) as totalOrders, "
+                        + "SUM(oi.quantity) as totalQuantity, "
+                        + "SUM(oi.subPrice) as totalRevenue "
+                        + "FROM orderitems oi "
+                        + "JOIN fooditems f ON oi.foodName = f.foodName "
+                        + "GROUP BY oi.foodName "
+                        + "ORDER BY totalQuantity DESC")) {
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("foodName"),
+                    rs.getInt("totalOrders"),
+                    rs.getInt("totalQuantity"),
+                    "₦" + String.format("%,.2f", rs.getBigDecimal("totalRevenue"))
+                });
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error loading food analysis: " + ex.getMessage(),
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
-        
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, 
-            "Error loading food analysis: " + ex.getMessage(),
-            "Database Error", 
-            JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
     }
-}
+
+    private void checkLowStockItems() {
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/crm",
+                "root",
+                envNew.password); PreparedStatement pst = conn.prepareStatement(
+                        "SELECT foodName, quantity FROM fooditems "
+                        + "WHERE quantity BETWEEN 1 AND 5")) {
+
+            ResultSet rs = pst.executeQuery();
+            Set<String> currentLowStockItems = new HashSet<>();
+            StringBuilder alertMessage = new StringBuilder();
+
+            // Check current low stock items
+            while (rs.next()) {
+                String foodName = rs.getString("foodName");
+                int quantity = rs.getInt("quantity");
+                currentLowStockItems.add(foodName);
+
+                // If this is a new low stock item, add to alert
+                if (!lowStockAlertedItems.contains(foodName)) {
+                    alertMessage.append(String.format("- %s (Remaining: %d)%n", foodName, quantity));
+                }
+            }
+
+            // Show alert if there are new low stock items
+            if (alertMessage.length() > 0) {
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Low Stock Alert:\n" + alertMessage.toString(),
+                            "Inventory Warning",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                });
+            }
+
+            // Update our tracking set
+            lowStockAlertedItems = currentLowStockItems;
+
+        } catch (Exception ex) {
+            System.err.println("Error checking low stock: " + ex.getMessage());
+        }
+    }
+
     private void loadDailyServingStatus(String date) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify where to save the CSV file");
