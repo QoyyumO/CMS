@@ -6,6 +6,7 @@ package cms;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.PrintWriter;
 import java.security.Timestamp;
@@ -42,6 +43,7 @@ public class HOUDashboard extends javax.swing.JFrame {
      */
     public HOUDashboard() {
         initComponents();
+        setIconImage();
         refreshTimer = new Timer(1000, e -> {
             loadDailyRealTimeKitchenUpdates();
             loadDailyRealTimePayments();
@@ -678,7 +680,6 @@ public class HOUDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -703,20 +704,24 @@ public class HOUDashboard extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable5 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTable6 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Georgia Pro", 1, 24)); // NOI18N
-        jLabel1.setText("H of U Dashboard");
+        jPanel1.setBackground(new java.awt.Color(0, 62, 147));
 
         jLabel2.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
         jLabel2.setText("Hello");
 
         jLabel3.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jLabel3.setText("jLabel3");
+
+        jTabbedPane1.setFont(new java.awt.Font("Georgia Pro", 0, 12)); // NOI18N
 
         jTable1.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -737,7 +742,9 @@ public class HOUDashboard extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jButton1.setBackground(new java.awt.Color(0, 62, 147));
+        jButton1.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Daily Report");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -745,7 +752,9 @@ public class HOUDashboard extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jButton3.setBackground(new java.awt.Color(0, 62, 147));
+        jButton3.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Range Report");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -760,6 +769,7 @@ public class HOUDashboard extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton3))
@@ -770,12 +780,12 @@ public class HOUDashboard extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3))
-                .addGap(15, 15, 15))
+                    .addComponent(jButton3)
+                    .addComponent(jButton1))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Orders", jPanel2);
@@ -798,7 +808,9 @@ public class HOUDashboard extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable2);
 
+        jButton4.setBackground(new java.awt.Color(0, 62, 147));
         jButton4.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Daily Report");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -806,7 +818,9 @@ public class HOUDashboard extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setBackground(new java.awt.Color(0, 62, 147));
         jButton5.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Range Report");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -832,7 +846,7 @@ public class HOUDashboard extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -861,7 +875,9 @@ public class HOUDashboard extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jTable3);
 
+        jButton7.setBackground(new java.awt.Color(0, 62, 147));
         jButton7.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jButton7.setForeground(new java.awt.Color(255, 255, 255));
         jButton7.setText("Daily Report");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -869,7 +885,9 @@ public class HOUDashboard extends javax.swing.JFrame {
             }
         });
 
+        jButton8.setBackground(new java.awt.Color(0, 62, 147));
         jButton8.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jButton8.setForeground(new java.awt.Color(255, 255, 255));
         jButton8.setText("Range Report");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -895,12 +913,12 @@ public class HOUDashboard extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
-                .addGap(24, 24, 24))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton8)
+                    .addComponent(jButton7))
+                .addGap(12, 12, 12))
         );
 
         jTabbedPane1.addTab("Serving Statuses", jPanel4);
@@ -933,7 +951,7 @@ public class HOUDashboard extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -957,20 +975,36 @@ public class HOUDashboard extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(jTable5);
 
+        jButton2.setBackground(new java.awt.Color(0, 62, 147));
+        jButton2.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Change Roles");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 60, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("User Activities", jPanel6);
@@ -1004,46 +1038,51 @@ public class HOUDashboard extends javax.swing.JFrame {
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Popular Food Item", jPanel7);
+
+        jLabel1.setFont(new java.awt.Font("Volte Semibold", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("HEAD OF UNITS");
+
+        jLabel4.setFont(new java.awt.Font("Volte Semibold", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("DASHBOARD");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel2)
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel3)))
+                        .addComponent(jLabel2)
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel3)
+                        .addGap(57, 57, 57)
+                        .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTabbedPane1)))
+                    .addComponent(jTabbedPane1))
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(243, 243, 243)
+                .addComponent(jLabel4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addGap(7, 7, 7)
                 .addComponent(jTabbedPane1)
                 .addContainerGap())
         );
@@ -1134,80 +1173,6 @@ public class HOUDashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        JDateChooser dateChooser = new JDateChooser();
-        dateChooser.setDateFormatString("yyyy-MM-dd");
-
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Select Date:"));
-        panel.add(dateChooser);
-
-        int result = JOptionPane.showConfirmDialog(
-                this,
-                panel,
-                "Select Date for Daily Report",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE
-        );
-
-        if (result == JOptionPane.OK_OPTION) {
-            Date selectedDate = dateChooser.getDate();
-            if (selectedDate != null) {
-                // Format the date for SQL query
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                String dateString = sdf.format(selectedDate);
-
-                // Query database for records from this date
-                loadDailyOrders(dateString);
-            }
-        }
-
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        // Create date pickers
-        JDateChooser startDateChooser = new JDateChooser();
-        JDateChooser endDateChooser = new JDateChooser();
-        startDateChooser.setDateFormatString("yyyy-MM-dd");
-        endDateChooser.setDateFormatString("yyyy-MM-dd");
-
-        // Set default dates (e.g., current week)
-        Calendar cal = Calendar.getInstance();
-        endDateChooser.setDate(cal.getTime()); // Today as end date
-        cal.add(Calendar.DAY_OF_MONTH, -7); // One week back
-        startDateChooser.setDate(cal.getTime());
-
-        JPanel panel = new JPanel(new GridLayout(2, 2));
-        panel.add(new JLabel("Start Date:"));
-        panel.add(startDateChooser);
-        panel.add(new JLabel("End Date:"));
-        panel.add(endDateChooser);
-
-        int result = JOptionPane.showConfirmDialog(
-                this,
-                panel,
-                "Select Date Range for Report",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE
-        );
-
-        if (result == JOptionPane.OK_OPTION) {
-            Date startDate = startDateChooser.getDate();
-            Date endDate = endDateChooser.getDate();
-
-            if (startDate != null && endDate != null) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                loadRangeOrders(
-                        sdf.format(startDate),
-                        sdf.format(endDate)
-                );
-            }
-        }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
         // Create date pickers
@@ -1279,8 +1244,91 @@ public class HOUDashboard extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        JDateChooser dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("yyyy-MM-dd");
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Select Date:"));
+        panel.add(dateChooser);
+
+        int result = JOptionPane.showConfirmDialog(
+            this,
+            panel,
+            "Select Date for Daily Report",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            Date selectedDate = dateChooser.getDate();
+            if (selectedDate != null) {
+                // Format the date for SQL query
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String dateString = sdf.format(selectedDate);
+
+                // Query database for records from this date
+                loadDailyOrders(dateString);
+            }
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        // Create date pickers
+        JDateChooser startDateChooser = new JDateChooser();
+        JDateChooser endDateChooser = new JDateChooser();
+        startDateChooser.setDateFormatString("yyyy-MM-dd");
+        endDateChooser.setDateFormatString("yyyy-MM-dd");
+
+        // Set default dates (e.g., current week)
+        Calendar cal = Calendar.getInstance();
+        endDateChooser.setDate(cal.getTime()); // Today as end date
+        cal.add(Calendar.DAY_OF_MONTH, -7); // One week back
+        startDateChooser.setDate(cal.getTime());
+
+        JPanel panel = new JPanel(new GridLayout(2, 2));
+        panel.add(new JLabel("Start Date:"));
+        panel.add(startDateChooser);
+        panel.add(new JLabel("End Date:"));
+        panel.add(endDateChooser);
+
+        int result = JOptionPane.showConfirmDialog(
+            this,
+            panel,
+            "Select Date Range for Report",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+            Date startDate = startDateChooser.getDate();
+            Date endDate = endDateChooser.getDate();
+
+            if (startDate != null && endDate != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                loadRangeOrders(
+                    sdf.format(startDate),
+                    sdf.format(endDate)
+                );
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        ChangeRole page = new ChangeRole();
+        page.show();
+        dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
     public void setUserName(String userName) {
         jLabel3.setText(userName);
+    }
+    private void setIconImage(){
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icon.png")));
     }
 
     /**
@@ -1320,6 +1368,7 @@ public class HOUDashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -1328,6 +1377,7 @@ public class HOUDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

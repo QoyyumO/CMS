@@ -4,12 +4,14 @@
  */
 package cms;
 
+import java.awt.Toolkit;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -31,8 +33,10 @@ public class ResetPassword extends javax.swing.JFrame {
      */
     public ResetPassword() {
         initComponents();
+        setIconImage();
     }
     env envNew = new env();
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,22 +47,20 @@ public class ResetPassword extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
         jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jPasswordField2 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(102, 255, 255));
-
-        jLabel1.setFont(new java.awt.Font("Georgia Pro", 1, 18)); // NOI18N
-        jLabel1.setText("Password Resetting");
-
-        jLabel2.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
-        jLabel2.setText("Email");
+        jPanel1.setBackground(new java.awt.Color(0, 62, 147));
+        jPanel1.setPreferredSize(new java.awt.Dimension(542, 194));
 
         jTextField1.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -67,7 +69,23 @@ public class ResetPassword extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Volte Semibold", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("RESET PASSWORD");
+
+        jLabel2.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Email");
+
+        jButton2.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jButton2.setText("Reset");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
         jButton1.setText("Search");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,65 +93,75 @@ public class ResetPassword extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Georgia Pro", 2, 14)); // NOI18N
-        jButton2.setText("Reset Password");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jLabel3.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("New Password");
+
+        jLabel4.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Confirm Password");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(42, 42, 42))
+                .addGap(15, 129, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(122, 122, 122))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(63, 63, 63)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(173, 173, 173)
-                        .addComponent(jButton2)))
-                .addContainerGap(174, Short.MAX_VALUE))
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jPasswordField2))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addGap(27, 27, 27)
+                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(17, 17, 17)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
                     .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
                 .addComponent(jButton2)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
         );
 
         pack();
@@ -143,6 +171,81 @@ public class ResetPassword extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            String email = jTextField1.getText().trim();
+
+            // Get password char arrays
+            char[] passChars1 = jPasswordField1.getPassword();
+            char[] passChars2 = jPasswordField2.getPassword();
+
+            // Convert char[] to String for comparison and emailing
+            String password1 = new String(passChars1).trim();
+            String password2 = new String(passChars2).trim();
+
+            // Clear the char arrays for security
+            Arrays.fill(passChars1, '0');
+            Arrays.fill(passChars2, '0');
+
+            if (!password1.equals(password2)) {
+                JOptionPane.showMessageDialog(rootPane, "Passwords do not match.");
+                return; // Stop execution if mismatch
+            }
+
+            String hashedPassword = Hash(password1);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
+            PreparedStatement ps = con.prepareStatement("update registration SET password =?  where email=?");
+            ps.setString(1, hashedPassword);
+            ps.setString(2, email);
+            int rs = ps.executeUpdate();
+            JOptionPane.showMessageDialog(rootPane, "Record Updated for " + email + "!");
+            {
+                String receiver = jTextField1.getText();
+                String body = "Hello,\n\n"
+                        + "Your registration has been successfully completed.\n\n"
+                        + "Here are your login details:\n"
+                        + "Email: " + email + "\n"
+                        + "Password: " + password1 + "\n\n"
+                        + "Please keep this information secure and do not share it with anyone.\n\n"
+                        + "If you did not initiate this registration, please contact support immediately.\n\n"
+                        + "Best regards,\n"
+                        + "The Cafeteria IT Team";
+                String senderEmail = "cafeteriait7@gmail.com";
+                String senderPassword = "carynuzwkesjaadv";
+                Properties props = new Properties();
+                props.put("mail.smtp.auth", "true");
+                props.put("mail.smtp.starttls.enable", "true");
+                props.put("mail.smtp.host", "smtp.gmail.com");
+                props.put("mail.smtp.port", "587");
+                Session session = Session.getInstance(props,
+                        new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(senderEmail, senderPassword);
+                    }
+                });
+
+                try {
+                    Message message = new MimeMessage(session);
+                    message.setFrom(new InternetAddress(senderEmail));
+                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
+                    message.setSubject("Password Reset");
+                    message.setText(body);
+                    Transport.send(message);
+                    JOptionPane.showMessageDialog(rootPane, "Email Sent");
+                } catch (MessagingException e) {
+                    JOptionPane.showMessageDialog(rootPane, "No internet connection" + e);
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(rootPane, "Error!");
+        }
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
@@ -151,109 +254,17 @@ public class ResetPassword extends javax.swing.JFrame {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
             System.out.println("Connection Successful");
             PreparedStatement ps = con.prepareStatement("select * from registration where email=?");
-            ps.setString(1,email);
+            ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                JOptionPane.showMessageDialog(rootPane, "Record found for "+email+ "!");
-            }else{
-              JOptionPane.showMessageDialog(rootPane, "No record found for "+email+ "!");
+                JOptionPane.showMessageDialog(rootPane, "Record found for " + email + "!");
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "No record found for " + email + "!");
             }
         } catch (Exception e) {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        try {
-            String email = jTextField1.getText();
-            String pass = Registration.PasswordGenerator.generateRandomPassword(8);
-            String password = Hash(pass);
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
-            PreparedStatement ps = con.prepareStatement("update registration SET password =?  where email=?");
-            ps.setString(1,password);
-            ps.setString(2,email);
-            int rs =ps.executeUpdate();
-            JOptionPane.showMessageDialog(rootPane, "Record Updated for "+email+"!");
-            {
-                    String receiver = jTextField1.getText();
-                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + pass + "       Remember your password";
-                    String senderEmail = "cafeteriait7@gmail.com";
-                    String senderPassword = "carynuzwkesjaadv";
-                    Properties props = new Properties();
-                    props.put("mail.smtp.auth", "true");
-                    props.put("mail.smtp.starttls.enable", "true");
-                    props.put("mail.smtp.host", "smtp.gmail.com");
-                    props.put("mail.smtp.port", "587");
-                    Session session = Session.getInstance(props,
-                            new javax.mail.Authenticator() {
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(senderEmail, senderPassword);
-                        }
-                    });
-
-                    try {
-                        Message message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(senderEmail));
-                        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
-                        message.setSubject("Password Reset");
-                        message.setText(body);
-                        Transport.send(message);
-                        JOptionPane.showMessageDialog(rootPane, "Email Sent");
-                    } catch (MessagingException e) {
-                        JOptionPane.showMessageDialog(rootPane, "No internet connection" + e);
-                    }
-                }
-            
-        } catch (Exception e) {
-            System.out.println(e);
-            JOptionPane.showMessageDialog(rootPane, "Error!");
-        }
-        
-        
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-    public class PasswordGenerator {
-
-        private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
-        private static final String CHAR_UPPER = CHAR_LOWER.toUpperCase();
-        private static final String NUMBER = "0123456789";
-        private static final String SPECIAL_CHARS = "!@#$%^&*()_+-=[]|,./?><";
-        private static final String PASSWORD_ALLOW_BASE = CHAR_LOWER + CHAR_UPPER + NUMBER + SPECIAL_CHARS;
-
-        private static SecureRandom random = new SecureRandom();
-
-        public static String generateRandomPassword(int length) {
-            if (length < 8) {
-                throw new IllegalArgumentException("Password length must be at least 8 characters");
-            }
-
-            StringBuilder sb = new StringBuilder(length);
-
-            // Ensure at least one character from each category
-            sb.append(CHAR_LOWER.charAt(random.nextInt(CHAR_LOWER.length())));
-            sb.append(CHAR_UPPER.charAt(random.nextInt(CHAR_UPPER.length())));
-            sb.append(NUMBER.charAt(random.nextInt(NUMBER.length())));
-            sb.append(SPECIAL_CHARS.charAt(random.nextInt(SPECIAL_CHARS.length())));
-
-            // Fill remaining with random characters
-            for (int i = 4; i < length; i++) {
-                sb.append(PASSWORD_ALLOW_BASE.charAt(random.nextInt(PASSWORD_ALLOW_BASE.length())));
-            }
-
-            // Shuffle the characters
-            String password = sb.toString();
-            char[] passwordArray = password.toCharArray();
-            for (int i = 0; i < passwordArray.length; i++) {
-                int randomIndex = random.nextInt(passwordArray.length);
-                char temp = passwordArray[i];
-                passwordArray[i] = passwordArray[randomIndex];
-                passwordArray[randomIndex] = temp;
-            }
-
-            return new String(passwordArray);
-        }
-    }
     public String Hash(String c) {
         try {
             MessageDigest msgDigest = MessageDigest.getInstance("MD5");
@@ -264,6 +275,9 @@ public class ResetPassword extends javax.swing.JFrame {
 
             return c;
         }
+    }
+    private void setIconImage(){
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icon.png")));
     }
     /**
      * @param args the command line arguments
@@ -305,8 +319,11 @@ public class ResetPassword extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

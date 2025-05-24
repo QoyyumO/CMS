@@ -6,6 +6,7 @@ package cms;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,13 +23,12 @@ import org.opencv.highgui.HighGui;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.videoio.VideoCapture;
 
-
-
 /**
  *
  * @author Ayomide
  */
 public class webcam extends javax.swing.JFrame {
+
     static {
         File file = new File("C:\\Users\\Ayomide\\Documents\\CSC 300\\OOP\\Class\\opencv\\build\\java\\x64\\opencv_java4110.dll");
         System.load(file.getAbsolutePath());
@@ -44,8 +44,10 @@ public class webcam extends javax.swing.JFrame {
      * Creates new form webcam
      */
     Registration registrationForm;
+
     public webcam(Registration reg) {
         initComponents();
+        setIconImage();
         websource = new VideoCapture(0);
         myThread = new DaemonThread(jLabel2);
         Thread t = new Thread(myThread);
@@ -70,18 +72,18 @@ public class webcam extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(102, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(0, 62, 147));
 
         jLabel1.setFont(new java.awt.Font("Georgia Pro", 1, 18)); // NOI18N
         jLabel1.setText("Webcam");
 
-        jButton1.setFont(new java.awt.Font("Georgia Pro", 2, 18)); // NOI18N
-        jButton1.setText("Take picture");
+        jButton1.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jButton1.setText("Capture");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -93,31 +95,23 @@ public class webcam extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(159, 159, 159)
-                                .addComponent(jLabel1))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(156, 156, 156)
-                                .addComponent(jButton1)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(8, 8, 8)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -128,11 +122,36 @@ public class webcam extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            File file = new File("Capture");
+            boolean flag = true;
+            if (!file.isDirectory()) {
+                flag = file.mkdir();
+            }
+            if (!flag) {
+                throw new Exception("Folder does not exist");
+            }
+            int imageNo = 1 + RAND.nextInt(999);
+            Filename = file.getAbsolutePath() + "\\" + "Webcam" + imageNo + ".jpg";
+            Imgcodecs.imwrite(Filename, frame);
+            getImage = file;
+            CaptureImage(jLabel2);
+            JOptionPane.showMessageDialog(rootPane, Filename + "Captured");
+
+            dispose();
+        } catch (Exception e) {
+            stopCam();
+            JOptionPane.showMessageDialog(rootPane, "Warning");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
     public class DaemonThread implements Runnable {
 
         protected volatile boolean runnable = false;
@@ -176,56 +195,35 @@ public class webcam extends javax.swing.JFrame {
     }
 
     private void CaptureImage(JLabel image) {
-    try {
-        stopCam();
-        if (getImage != null) {
-            ImageIcon imageicon = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(jLabel2.getWidth(), jLabel2.getHeight(), Image.SCALE_DEFAULT));
-            jLabel2.setIcon(imageicon);
-            ImageIcon imageico = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(registrationForm.jLabel7.getWidth(), registrationForm.jLabel7.getHeight(), Image.SCALE_DEFAULT));
-            registrationForm.jLabel7.setIcon(imageico);
-            
-            // update the photo byte array
-            File imageFile = new File(Filename);
-            FileInputStream fis = new FileInputStream(imageFile);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            
-            for (int length; (length = fis.read(buffer)) != -1;) {
-                baos.write(buffer, 0, length);
+        try {
+            stopCam();
+            if (getImage != null) {
+                ImageIcon imageicon = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(jLabel2.getWidth(), jLabel2.getHeight(), Image.SCALE_DEFAULT));
+                jLabel2.setIcon(imageicon);
+                ImageIcon imageico = new ImageIcon(new ImageIcon(Filename).getImage().getScaledInstance(registrationForm.jLabel7.getWidth(), registrationForm.jLabel7.getHeight(), Image.SCALE_DEFAULT));
+                registrationForm.jLabel7.setIcon(imageico);
+
+                // update the photo byte array
+                File imageFile = new File(Filename);
+                FileInputStream fis = new FileInputStream(imageFile);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+
+                for (int length; (length = fis.read(buffer)) != -1;) {
+                    baos.write(buffer, 0, length);
+                }
+
+                Registration.photo = baos.toByteArray();
+                fis.close();
             }
-            
-            Registration.photo = baos.toByteArray();
-            fis.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Warning");
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(rootPane, "Warning");
     }
-}
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-            try {
-                File file = new File("Capture");
-                boolean flag = true;
-                if (!file.isDirectory()) {
-                    flag = file.mkdir();
-                }
-                if (!flag) {
-                    throw new Exception("Folder does not exist");
-                }
-                int imageNo = 1 + RAND.nextInt(999);
-                Filename = file.getAbsolutePath() + "\\" + "Webcam" + imageNo + ".jpg";
-                Imgcodecs.imwrite(Filename, frame);
-                getImage = file;
-                CaptureImage(jLabel2);
-                JOptionPane.showMessageDialog(rootPane, Filename + "Captured");
-
-                dispose();
-            } catch (Exception e) {
-                stopCam();
-                JOptionPane.showMessageDialog(rootPane, "Warning");
-            }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void setIconImage() {
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icon.png")));
+    }
 
     /**
      * @param args the command line arguments

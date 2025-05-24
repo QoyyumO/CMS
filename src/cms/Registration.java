@@ -44,6 +44,7 @@ public class Registration extends javax.swing.JFrame {
      */
     public Registration() {
         initComponents();
+        setIconImage();
     }
      env envNew = new env();
     /**
@@ -59,27 +60,27 @@ public class Registration extends javax.swing.JFrame {
         buttonGroup4 = new javax.swing.ButtonGroup();
         jFileChooser1 = new javax.swing.JFileChooser();
         jPanel2 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jRadioButton2 = new javax.swing.JRadioButton();
-        jLabel8 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -94,16 +95,11 @@ public class Registration extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(0, 255, 255));
-
-        jLabel5.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
-        jLabel5.setText("Email Address");
-
-        jLabel6.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
-        jLabel6.setText("Gender");
+        jPanel2.setBackground(new java.awt.Color(0, 62, 147));
 
         buttonGroup4.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
+        jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton1.setText("Male");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,24 +107,12 @@ public class Registration extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Georgia Pro", 1, 24)); // NOI18N
-        jLabel1.setText("Registration");
-
-        jLabel2.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
-        jLabel2.setText("Name");
-
         jTextField1.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
-
-        jLabel3.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
-        jLabel3.setText("Date of Birth ");
-
-        jLabel4.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
-        jLabel4.setText("Phone Number");
 
         jTextField3.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
 
@@ -141,15 +125,43 @@ public class Registration extends javax.swing.JFrame {
 
         buttonGroup4.add(jRadioButton2);
         jRadioButton2.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
+        jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton2.setText("Female");
-
-        jLabel8.setFont(new java.awt.Font("Georgia Pro", 1, 14)); // NOI18N
-        jLabel8.setText("Role");
 
         jComboBox1.setFont(new java.awt.Font("Georgia Pro", 0, 14)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Role", "Ticketing", "Server", "Kitchen", "IT", "Head of Unit" }));
 
-        jButton3.setFont(new java.awt.Font("Georgia Pro", 2, 18)); // NOI18N
+        jDateChooser1.setDateFormatString("YYYY-MM-d");
+
+        jLabel1.setFont(new java.awt.Font("Volte Semibold", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("REGISTRATION");
+
+        jLabel2.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Name");
+
+        jLabel3.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Date of Birth ");
+
+        jLabel4.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Phone Number");
+
+        jLabel5.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Email Address");
+
+        jLabel6.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Gender");
+
+        jLabel8.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Role");
+
+        jButton3.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
         jButton3.setText("Register");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +169,7 @@ public class Registration extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Georgia Pro", 2, 18)); // NOI18N
+        jButton4.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
         jButton4.setText("Clear");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,43 +177,41 @@ public class Registration extends javax.swing.JFrame {
             }
         });
 
-        jDateChooser1.setDateFormatString("YYYY-MM-d");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(169, 169, 169)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jButton3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel5)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jRadioButton1)
-                                    .addGap(28, 28, 28)
-                                    .addComponent(jRadioButton2))
-                                .addComponent(jTextField4)
-                                .addComponent(jTextField3)
-                                .addComponent(jComboBox1, 0, 379, Short.MAX_VALUE)
-                                .addComponent(jTextField1)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addComponent(jRadioButton1)
+                        .addGap(28, 28, 28)
+                        .addComponent(jRadioButton2))
+                    .addComponent(jTextField4)
+                    .addComponent(jTextField3)
+                    .addComponent(jComboBox1, 0, 379, Short.MAX_VALUE)
+                    .addComponent(jTextField1)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(21, 21, 21))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(130, 130, 130)
+                .addComponent(jLabel1)
+                .addContainerGap(151, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton4)
+                .addGap(34, 34, 34))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,43 +219,56 @@ public class Registration extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(jButton3))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jRadioButton1)
+                            .addComponent(jRadioButton2))
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jButton4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2)
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel3)
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel6)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel8)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addGap(31, 31, 31))
         );
 
-        jPanel3.setBackground(new java.awt.Color(102, 255, 255));
+        jPanel3.setBackground(new java.awt.Color(0, 62, 147));
 
-        jButton1.setFont(new java.awt.Font("Georgia Pro", 2, 18)); // NOI18N
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+        );
+
+        jButton1.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
         jButton1.setText("Capture ");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -253,30 +276,13 @@ public class Registration extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Georgia Pro", 2, 18)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Volte Medium", 0, 14)); // NOI18N
         jButton2.setText("Upload");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
-                .addContainerGap())
-        );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -288,7 +294,7 @@ public class Registration extends javax.swing.JFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
                         .addComponent(jButton2)))
                 .addContainerGap())
         );
@@ -297,7 +303,7 @@ public class Registration extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -319,140 +325,13 @@ public class Registration extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        jTextField1.setText("");
-        jDateChooser1.setDate(null);
-        jTextField3.setText("");
-        jTextField4.setText("");
-        jRadioButton1.setSelected(false);
-        jRadioButton2.setSelected(false);
-        jComboBox1.setSelectedIndex(0);
-        jLabel7.setIcon(null);
-                
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        String name = jTextField1.getText();
-        if (name.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please enter a full name!");
-        }
-        Date dob = jDateChooser1.getDate();
-        if (dob == null) {
-            JOptionPane.showMessageDialog(null, "Please enter a date of birth!");
-            return;
-        }
-        String phone = jTextField3.getText();
-        if (phone.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please enter a phone number!");
-        }
-        String email = jTextField4.getText().toLowerCase();
-        if (email.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please enter an email!");
-        }
-        String gender = "";
-        if (jRadioButton1.isSelected()) {
-            gender = "M";
-        } else if (jRadioButton2.isSelected()) {
-            gender = "F";
-        }
-        if (gender.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please select a gender!");
-        }
-        String role = jComboBox1.getSelectedItem().toString();
-        if (jComboBox1.getSelectedIndex() <= 0) {
-            JOptionPane.showMessageDialog(null, "Please select a role!");
-        }
-        // Get image from jLabel7 if exists
-        
-        String pass = PasswordGenerator.generateRandomPassword(8);
-        String password = Hash(pass);
-
-        // Prepare data for database
-        java.sql.Date sqlDob = new java.sql.Date(dob.getTime());
-
-        // Insert into database
-        try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
-
-            String sql = "INSERT INTO registration (name, dob, phone, email, gender, role, profilephoto,password) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, name);
-            pst.setDate(2, sqlDob);
-            pst.setString(3, phone);
-            pst.setString(4, email);
-            pst.setString(5, gender);
-            pst.setString(6, role);
-            pst.setBytes(7,photo);
-            pst.setString(8, password);
-            int rowsAffected = pst.executeUpdate();
-
-            if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(null, "Registration successful!");
-                {
-                    String receiver = jTextField4.getText();
-                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + pass + "       Remember your passcode.";
-                    String senderEmail = "cafeteriait7@gmail.com";
-                    String senderPassword = "carynuzwkesjaadv";
-                    Properties props = new Properties();
-                    props.put("mail.smtp.auth", "true");
-                    props.put("mail.smtp.starttls.enable", "true");
-                    props.put("mail.smtp.host", "smtp.gmail.com");
-                    props.put("mail.smtp.port", "587");
-                    Session session = Session.getInstance(props,
-                            new javax.mail.Authenticator() {
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(senderEmail, senderPassword);
-                        }
-                    });
-
-                    try {
-                        Message message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(senderEmail));
-                        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
-                        message.setSubject("User Registration");
-                        message.setText(body);
-                        Transport.send(message);
-                        JOptionPane.showMessageDialog(rootPane, "Email Sent");
-                    } catch (MessagingException e) {
-                        JOptionPane.showMessageDialog(rootPane, "No internet connection" + e);
-                    }
-                }
-                jTextField1.setText("");
-                jDateChooser1.setDate(null);
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jRadioButton1.setSelected(false);
-                jRadioButton2.setSelected(false);
-                jComboBox1.setSelectedIndex(0);
-                jLabel7.setIcon(null);
-            } else {
-                JOptionPane.showMessageDialog(null, "Registration failed!");
-            }
-            
-            pst.close();
-            conn.close();
-        } catch (Exception e) {
-            System.out.println(e);
-            JOptionPane.showMessageDialog(rootPane, "Error!");
-        }
-        
-    }//GEN-LAST:event_jButton3ActionPerformed
     public class PasswordGenerator {
 
         private static final String CHAR_LOWER = "abcdefghijklmnopqrstuvwxyz";
@@ -499,16 +378,140 @@ public class Registration extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-        webcam page = new webcam(this);
-        page.show();
-        page.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String name = jTextField1.getText();
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a full name!");
+        }
+        Date dob = jDateChooser1.getDate();
+        if (dob == null) {
+            JOptionPane.showMessageDialog(null, "Please enter a date of birth!");
+            return;
+        }
+        String phone = jTextField3.getText();
+        if (phone.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter a phone number!");
+        }
+        String email = jTextField4.getText().toLowerCase();
+        if (email.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please enter an email!");
+        }
+        String gender = "";
+        if (jRadioButton1.isSelected()) {
+            gender = "M";
+        } else if (jRadioButton2.isSelected()) {
+            gender = "F";
+        }
+        if (gender.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select a gender!");
+        }
+        String role = jComboBox1.getSelectedItem().toString();
+        if (jComboBox1.getSelectedIndex() <= 0) {
+            JOptionPane.showMessageDialog(null, "Please select a role!");
+        }
+        // Get image from jLabel7 if exists
+
+        String pass = PasswordGenerator.generateRandomPassword(8);
+        String password = Hash(pass);
+
+        // Prepare data for database
+        java.sql.Date sqlDob = new java.sql.Date(dob.getTime());
+
+        // Insert into database
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password);
+
+            String sql = "INSERT INTO registration (name, dob, phone, email, gender, role, profilephoto,password) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement pst = conn.prepareStatement(sql);
+            pst.setString(1, name);
+            pst.setDate(2, sqlDob);
+            pst.setString(3, phone);
+            pst.setString(4, email);
+            pst.setString(5, gender);
+            pst.setString(6, role);
+            pst.setBytes(7,photo);
+            pst.setString(8, password);
+            int rowsAffected = pst.executeUpdate();
+
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Registration successful!");
+                {
+                    String receiver = jTextField4.getText();
+                    String body = "Hello, Registration Complete. Your Email is " + email + ". Your Password is: " + pass + "       Remember your passcode.";
+                    String senderEmail = "cafeteriait7@gmail.com";
+                    String senderPassword = "carynuzwkesjaadv";
+                    Properties props = new Properties();
+                    props.put("mail.smtp.auth", "true");
+                    props.put("mail.smtp.starttls.enable", "true");
+                    props.put("mail.smtp.host", "smtp.gmail.com");
+                    props.put("mail.smtp.port", "587");
+                    Session session = Session.getInstance(props,
+                        new javax.mail.Authenticator() {
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(senderEmail, senderPassword);
+                            }
+                        });
+
+                        try {
+                            Message message = new MimeMessage(session);
+                            message.setFrom(new InternetAddress(senderEmail));
+                            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
+                            message.setSubject("User Registration");
+                            message.setText(body);
+                            Transport.send(message);
+                            JOptionPane.showMessageDialog(rootPane, "Email Sent");
+                        } catch (MessagingException e) {
+                            JOptionPane.showMessageDialog(rootPane, "No internet connection" + e);
+                        }
+                    }
+                    jTextField1.setText("");
+                    jDateChooser1.setDate(null);
+                    jTextField3.setText("");
+                    jTextField4.setText("");
+                    jRadioButton1.setSelected(false);
+                    jRadioButton2.setSelected(false);
+                    jComboBox1.setSelectedIndex(0);
+                    jLabel7.setIcon(null);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Registration failed!");
+                }
+
+                pst.close();
+                conn.close();
+            } catch (Exception e) {
+                System.out.println(e);
+                JOptionPane.showMessageDialog(rootPane, "Error!");
+            }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        jTextField1.setText("");
+        jDateChooser1.setDate(null);
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jRadioButton1.setSelected(false);
+        jRadioButton2.setSelected(false);
+        jComboBox1.setSelectedIndex(0);
+        jLabel7.setIcon(null);
+
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-            try {
+        try {
             FileNameExtensionFilter filter = new FileNameExtensionFilter("Image", "jpg", "jpeg", "png", "gif", "bmp");
             jFileChooser1.setAcceptAllFileFilterUsed(false);
             jFileChooser1.addChoosableFileFilter(filter);
@@ -533,13 +536,17 @@ public class Registration extends javax.swing.JFrame {
             photo = baos.toByteArray();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Error Reading File");
+            JOptionPane.showMessageDialog(rootPane, "Error Reading File" );
+            e.printStackTrace();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        webcam page = new webcam(this);
+        page.show();
+        page.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
     public String Hash(String c) {
         try {
             MessageDigest msgDigest = MessageDigest.getInstance("MD5");
@@ -550,6 +557,9 @@ public class Registration extends javax.swing.JFrame {
 
             return c;
         }
+    }
+    private void setIconImage(){
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Icon.png")));
     }
 
     /**
