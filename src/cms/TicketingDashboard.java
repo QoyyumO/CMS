@@ -130,7 +130,7 @@ public class TicketingDashboard extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -305,10 +305,10 @@ public class TicketingDashboard extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addGap(34, 34, 34)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton2)
-                            .addComponent(jButton3))
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(55, 55, 55))))
         );
 
@@ -447,7 +447,7 @@ public class TicketingDashboard extends javax.swing.JFrame {
                 StringBuilder receipt = new StringBuilder();
                 receipt.append("=========== RECEIPT ===========\n");
                 receipt.append("Order ID: ").append(orderId).append("\n");
-                receipt.append("------------------------------\n");
+                receipt.append("----------------------------------------------\n");
                 receipt.append(String.format("%-20s %-10s %-10s\n", "Item", "Qty", "Price"));
                 BigDecimal total = BigDecimal.ZERO;
 
@@ -491,7 +491,7 @@ public class TicketingDashboard extends javax.swing.JFrame {
                     updateStmt.setString(2, foodName);
                     updateStmt.executeUpdate();
                 }
-                receipt.append("------------------------------\n");
+                receipt.append("------------------------------------------------------\n");
                 receipt.append(String.format("TOTAL: %.2f\n", total));
                 receipt.append("==============================");
 

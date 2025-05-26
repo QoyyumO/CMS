@@ -228,7 +228,7 @@ public class ServerDashboard extends javax.swing.JFrame {
             tableModel.setRowCount(0); // Clear existing rows
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password); PreparedStatement ps = con.prepareStatement("SELECT orderid FROM orders WHERE status = 0"); ResultSet rs = ps.executeQuery()) {
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/crm", "root", envNew.password); PreparedStatement ps = con.prepareStatement("SELECT orderid FROM orders WHERE status = 0 and date(created_at) = CURRENT_DATE "); ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
                     String orderid = rs.getString(1);
